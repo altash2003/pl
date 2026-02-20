@@ -11,30 +11,36 @@
   --strokeSoft: rgba(0,0,0,.18);
 
   --btn: rgba(0,0,0,.30);
-  --btnHover: rgba(0,0,0,.38);
+  --btnHover: rgba(0,0,0,.40);
 
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
 
-  /* table columns */
+  /* viewer table columns */
   --colIcon: 150px;
   --colPrice: 220px;
 
-  /* typography scale (consistent) */
+  /* admin table extra column */
+  --colAction: 180px;
+
+  /* typography */
   --fz-title: 22px;
   --fz-section: 20px;
   --fz-label: 15px;
   --fz-input: 16px;
   --fz-table: 20px;
+
+  --radius: 16px;
 }
 
-*{box-sizing:border-box}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
-  font-family: "Montserrat", Arial, sans-serif;
+  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
+  line-height: 1.25;
 }
 
 /* ================= VIEWER ================= */
@@ -48,7 +54,7 @@ h1{
   margin:0;
   font-size:42px;
   font-weight:900;
-  color:white;
+  color:#fff;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
@@ -79,10 +85,14 @@ h1{
   font-weight:700;
   text-align:center;
   outline:none;
-  font-family: inherit; /* ✅ consistent */
+  font-family: inherit;
 }
 
-/* ✅ Center selected value properly */
+.input:focus{
+  border-color: rgba(0,0,0,.28);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.18);
+}
+
 select.input{
   text-align:center;
   text-align-last:center;
@@ -91,7 +101,6 @@ select.input{
   -webkit-appearance:none;
   -moz-appearance:none;
 
-  /* symmetrical padding keeps the text visually centered */
   padding-left:42px;
   padding-right:42px;
 
@@ -105,36 +114,32 @@ select.input{
   background-repeat:no-repeat;
 }
 
-select.input option{
-  text-align:center;
-}
+select.input option{ text-align:center; }
 
-/* ---------- TABLE ---------- */
+/* ---------- TABLE (base) ---------- */
 
 .table{
-  border-radius:16px;
+  border-radius:var(--radius);
   overflow:hidden;
   border:2px solid rgba(0,0,0,.18);
   background: rgba(255,255,255,.14);
 }
 
-/* uppercase everything inside table */
 .table .row{
   text-transform: uppercase;
 }
 
-/* ✅ TRUE center alignment for ALL cells (icon + name + price + actions) */
 .row{
   position: relative;
   display:grid;
   grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
-  justify-items:center;     /* ✅ centers contents inside each grid cell */
-  text-align:center;        /* ✅ centers text */
+  justify-items:center;  /* ✅ center everything in cells */
+  text-align:center;
   border-top:1px solid var(--strokeSoft);
 }
 
-/* ✅ continuous vertical grid lines */
+/* ✅ continuous vertical lines for 3-col tables (viewer) */
 .row::after{
   content:"";
   position:absolute;
@@ -156,22 +161,21 @@ select.input option{
     );
 }
 
-/* header row */
 .row.head{
   background: linear-gradient(#f2f2f2,#cfcfcf);
   border-top:none;
 }
 
 .row > div{
-  padding:12px 10px; /* tighter */
+  width:100%;
+  padding:12px 10px;
   font-size:var(--fz-table);
   font-weight:900;
-  color:white;
+  color:#fff;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
-  width:100%;
 }
 
-/* header cell text bold black */
+/* header text bold black */
 .row.head > div{
   color:#000;
   font-weight:950;
@@ -180,10 +184,10 @@ select.input option{
 
 /* icon */
 .iconCell{
+  width:100%;
   display:flex;
   justify-content:center;
   align-items:center;
-  width:100%;
 }
 
 .icon{
@@ -194,14 +198,20 @@ select.input option{
   border:2px solid rgba(255,255,255,.75);
   box-shadow:0 8px 18px rgba(0,0,0,.22);
   background: rgba(255,255,255,.18);
+  transition: transform .12s ease, filter .12s ease;
 }
 
-.cellName{ color:white; }
-.cellPrice{ color:white; }
+.icon:hover{
+  transform: scale(1.04);
+  filter: brightness(1.03);
+}
+
+.cellName{ color:#fff; }
+.cellPrice{ color:#fff; }
 
 .foot{
   margin-top:10px;
-  color:white;
+  color:#fff;
   font-weight:900;
   text-align:center;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
@@ -232,19 +242,21 @@ select.input option{
   display:flex;
   align-items:center;
   gap:12px;
-  color:white;
+  color:#fff;
 }
 
 .dot{
   width:14px;
   height:14px;
   border-radius:999px;
-  background:white;
+  background:#fff;
+  box-shadow: 0 0 0 5px rgba(255,255,255,.14);
 }
 
 .adminTitle{
   font-weight:950;
-  font-size:var(--fz-title); /* ✅ consistent */
+  font-size:var(--fz-title);
+  letter-spacing:.3px;
 }
 
 .adminSub{
@@ -259,32 +271,32 @@ select.input option{
   align-items:center;
 }
 
-.adminWrap{
-  max-width:1100px;
-}
+.adminWrap{ max-width:1100px; }
 
 /* cards */
 .card{
   background: var(--panel);
-  border-radius:16px;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius:var(--radius);
   padding:14px;
   margin-bottom:14px;
   backdrop-filter: blur(10px);
 }
 
-/* section block */
-.sectionBlock{
-  background: var(--panel2);
-  border-radius:14px;
-  padding:12px;
-}
-
+/* headings */
 .sectionTitle{
   margin:0 0 10px;
-  font-size:var(--fz-section); /* ✅ consistent */
+  font-size:var(--fz-section);
   font-weight:950;
-  color:white;
+  color:#fff;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
+}
+
+.sectionBlock{
+  background: var(--panel2);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius:14px;
+  padding:12px;
 }
 
 /* layout */
@@ -294,21 +306,19 @@ select.input option{
   gap:14px;
 }
 
-.adminWide{
-  grid-column: 1 / -1;
-}
+.adminWide{ grid-column: 1 / -1; }
 
 .formGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap:10px;
+  gap:12px; /* ✅ consistent spacing */
 }
 
 .field span{
   display:block;
-  font-size:var(--fz-label);  /* ✅ consistent labels */
+  font-size:var(--fz-label);
   font-weight:800;
-  color:white;
+  color:#fff;
   margin-bottom:6px;
 }
 
@@ -322,23 +332,29 @@ select.input option{
 .rowButtons{
   display:flex;
   gap:10px;
-  margin-top:10px;
+  margin-top:12px;
   flex-wrap:wrap;
-  justify-content:flex-start;
   align-items:center;
 }
 
-/* ✅ toolbar alignment: consistent widths + centered layout */
+/* ✅ Center-align Save button in modal */
+.modalActions{
+  justify-content:center;
+}
+
+/* ✅ Toolbar alignment: clean and balanced */
 .toolbar{
   display:grid;
   grid-template-columns: 260px 1fr 140px;
   gap:10px;
   align-items:center;
-  justify-items:stretch;
   margin:10px 0 12px;
 }
 
-.toolbar .input{ min-width: 0; width:100%; }
+.toolbar .input{
+  min-width:0;
+  width:100%;
+}
 
 /* buttons */
 .btn{
@@ -346,13 +362,15 @@ select.input option{
   border-radius:14px;
   border:none;
   background: var(--btn);
-  color:white;
+  color:#fff;
   font-weight:900;
   cursor:pointer;
-  font-family: inherit; /* ✅ consistent */
+  font-family: inherit;
+  transition: transform .08s ease, background .12s ease, opacity .12s ease;
 }
 
 .btn:hover{ background: var(--btnHover); }
+.btn:active{ transform: translateY(1px); }
 
 .btn.ghost{
   background: rgba(255,255,255,.26);
@@ -368,7 +386,14 @@ select.input option{
   border-radius:12px;
 }
 
-/* file row */
+/* inactive/disabled cues */
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* file upload */
 .fileWrap{
   display:flex;
   align-items:center;
@@ -382,17 +407,21 @@ select.input option{
   justify-content:center;
   padding:11px 14px;
   border-radius:14px;
-  background: rgba(255,255,255,.26);
+  background: rgba(255,255,255,.30);
   color:#0b0b0b;
   font-weight:900;
   cursor:pointer;
   border: 1px solid rgba(0,0,0,.12);
-  font-family: inherit;
+  transition: transform .08s ease, background .12s ease;
+  user-select:none;
 }
+
+.fileBtn:hover{ background: rgba(255,255,255,.40); }
+.fileBtn:active{ transform: translateY(1px); }
 
 .fileName{
   font-weight:800;
-  color:white;
+  color:#fff;
   max-width: 100%;
   overflow:hidden;
   text-overflow: ellipsis;
@@ -419,13 +448,13 @@ select.input option{
 
 .catName{
   font-weight:900;
-  color:white;
+  color:#fff;
 }
 
 .catMeta{
   font-size:12px;
   font-weight:700;
-  color:white;
+  color:#fff;
   opacity:.95;
 }
 
@@ -434,19 +463,54 @@ select.input option{
   font-size:11px;
 }
 
-/* admin items table columns (icon, name, price, actions) */
+/* ================= ADMIN ITEMS TABLE (4 columns) ================= */
+
+/* icon | name | price | actions */
 .table.mini .row{
-  grid-template-columns: var(--colIcon) 1fr var(--colPrice) 180px;
+  grid-template-columns: var(--colIcon) 1fr var(--colPrice) var(--colAction);
 }
 
-/* action cell */
+/* ✅ override vertical lines for 4-col table so NAME/PRICE divider is strong + continuous */
+.table.mini .row::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+
+  /* vertical lines at:
+     1) after icon: var(--colIcon)
+     2) between name and price: calc(100% - (var(--colPrice) + var(--colAction)))
+     3) between price and actions: calc(100% - var(--colAction))
+  */
+  background:
+    linear-gradient(to right,
+      transparent 0,
+      transparent var(--colIcon),
+      var(--strokeSoft) var(--colIcon),
+      var(--strokeSoft) calc(var(--colIcon) + 1px),
+      transparent calc(var(--colIcon) + 1px),
+
+      transparent calc(100% - (var(--colPrice) + var(--colAction))),
+      var(--strokeSoft) calc(100% - (var(--colPrice) + var(--colAction))),
+      var(--strokeSoft) calc(100% - (var(--colPrice) + var(--colAction)) + 1px),
+      transparent calc(100% - (var(--colPrice) + var(--colAction)) + 1px),
+
+      transparent calc(100% - var(--colAction)),
+      var(--strokeSoft) calc(100% - var(--colAction)),
+      var(--strokeSoft) calc(100% - var(--colAction) + 1px),
+      transparent calc(100% - var(--colAction) + 1px),
+      transparent 100%
+    );
+}
+
+/* centered action buttons */
 .actionCell{
+  width:100%;
   display:flex;
   justify-content:center;
   align-items:center;
   gap:8px;
   flex-wrap:wrap;
-  width:100%;
 }
 
 /* larger icons */
@@ -457,22 +521,30 @@ select.input option{
   object-fit: cover;
 }
 
-/* modal */
+/* ================= MODAL ================= */
+
 .modal{ position: fixed; inset:0; z-index:9998; }
 .modalBackdrop{
   position:absolute; inset:0;
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,.38);
+  backdrop-filter: blur(7px);
 }
+
+/* ✅ responsive modal sizing + not too big */
 .modalCard{
   position: relative;
-  width: min(820px, calc(100vw - 28px));
-  margin: 80px auto 0;
+  width: min(820px, 92vw);
+  margin: 8vh auto 0;
   background: rgba(255,255,255,.18);
-  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: var(--radius);
   padding: 14px;
   backdrop-filter: blur(10px);
+
+  max-height: 84vh;
+  overflow:auto;
 }
+
 .modalHead{
   display:flex;
   justify-content:space-between;
@@ -480,13 +552,16 @@ select.input option{
   gap:10px;
   margin-bottom:10px;
 }
+
 .modalTitle{
   font-weight:950;
   font-size:20px;
-  color:white;
+  color:#fff;
+  text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* toasts */
+/* ================= TOASTS ================= */
+
 .toastHost{
   position: fixed;
   right: 14px;
@@ -505,6 +580,7 @@ select.input option{
   background: rgba(0,0,0,.22);
   color: rgba(255,255,255,.98);
   font-weight: 900;
+  box-shadow: 0 10px 22px rgba(0,0,0,.20);
 }
 
 .toast.good{ background: var(--good); }
@@ -517,15 +593,17 @@ select.input option{
   color: rgba(255,255,255,.98);
 }
 
-.hidden{display:none}
+.hidden{ display:none; }
 
-/* responsive */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width:760px){
-  h1{font-size:34px}
+  h1{ font-size:34px; }
 
   :root{
     --colIcon: 120px;
     --colPrice: 150px;
+    --colAction: 150px;
     --fz-table: 18px;
   }
 
@@ -536,7 +614,6 @@ select.input option{
   .adminGrid{ grid-template-columns:1fr; }
   .formGrid{ grid-template-columns:1fr; }
 
-  /* toolbar stacks nicely */
   .toolbar{
     grid-template-columns: 1fr;
   }
@@ -544,5 +621,9 @@ select.input option{
   .input{
     min-width:0;
     width:100%;
+  }
+
+  .modalCard{
+    margin: 6vh auto 0;
   }
 }
