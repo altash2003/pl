@@ -2,6 +2,8 @@
   --bg1:#06d6e6;
   --bg2:#00bcd4;
   --line: rgba(0,0,0,.18);
+  --card: rgba(255,255,255,.16);
+  --text:#0b0b0b;
 }
 
 *{box-sizing:border-box}
@@ -11,10 +13,10 @@ body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
-  color:#0b0b0b;
+  color:var(--text);
 }
 
-/* HEADER */
+/* ---------- VIEWER HEADER ---------- */
 .top{
   padding:22px 16px;
   text-align:center;
@@ -36,7 +38,7 @@ h1{
   padding:14px 16px 30px;
 }
 
-/* CONTROLS */
+/* ---------- INPUTS ---------- */
 .controls{
   display:flex;
   gap:10px;
@@ -55,7 +57,7 @@ h1{
   text-align:center;
 }
 
-/* TABLE */
+/* ---------- TABLE (viewer + admin) ---------- */
 .table{
   border-radius:18px;
   overflow:hidden;
@@ -63,26 +65,26 @@ h1{
   background: rgba(255,255,255,.12);
 }
 
-/* GRID ROW */
+/* Grid row (CENTER aligned, equal font sizes) */
 .row{
   display:grid;
   grid-template-columns: 160px 1fr 220px;
   align-items:center;
   border-top:1px solid var(--line);
-  text-align:center; /* CENTER ALL TEXT */
+  text-align:center;
 }
 
 .row.head{
   background: linear-gradient(#f2f2f2,#cfcfcf);
   border-top:none;
   font-weight:800;
-  font-size:18px; /* SAME SIZE */
+  font-size:18px;
 }
 
 .row > div{
   padding:16px 14px;
   border-right:1px solid var(--line);
-  font-size:18px; /* PERFECT TABLE SIZE */
+  font-size:18px;
   font-weight:700;
 }
 
@@ -90,7 +92,7 @@ h1{
   border-right:none;
 }
 
-/* ICON */
+/* Icon */
 .iconCell{
   display:flex;
   justify-content:center;
@@ -105,7 +107,7 @@ h1{
   box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
 
-/* FOOTER COUNT */
+/* Footer count */
 .foot{
   margin-top:10px;
   color:white;
@@ -113,8 +115,236 @@ h1{
   text-align:center;
 }
 
-/* MOBILE */
+/* ---------- ADMIN UI ---------- */
+.adminTop{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,.18);
+  border-bottom: 1px solid rgba(255,255,255,.18);
+}
+
+.adminTopInner{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.adminBrand{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  color: white;
+}
+
+.dot{
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.15);
+}
+
+.adminTitle{
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+
+.adminSub{
+  font-size: 13px;
+  opacity: .9;
+}
+
+.adminActions{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.adminWrap{
+  max-width: 1100px;
+}
+
+.card{
+  background: var(--card);
+  border:1px solid rgba(0,0,0,.14);
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:14px;
+  backdrop-filter: blur(8px);
+}
+
+.sectionTitle{
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.muted{
+  margin: 0 0 14px;
+  opacity: .85;
+}
+
+.cardHead{
+  margin-bottom: 10px;
+}
+
+.adminGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.adminWide{
+  grid-column: 1 / -1;
+}
+
+.formGrid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.field span{
+  display:block;
+  font-size: 13px;
+  font-weight: 800;
+  opacity: .85;
+  margin: 0 0 6px;
+}
+
+.inlineForm{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom: 10px;
+}
+
+.rowButtons{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin: 10px 0 12px;
+}
+
+/* Buttons */
+.btn{
+  padding:10px 14px;
+  border-radius:12px;
+  border:none;
+  background: rgba(0,0,0,.25);
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.btn.ghost{
+  background: rgba(255,255,255,.28);
+  color:#0b0b0b;
+}
+
+.btn.danger{
+  background: rgba(255,0,0,.35);
+}
+
+.btn.small{
+  padding:8px 10px;
+  border-radius:10px;
+}
+
+/* Lists */
+.list{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.catRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(0,0,0,.10);
+}
+
+.catLeft{
+  display:flex;
+  flex-direction:column;
+  gap: 2px;
+}
+
+.catName{
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 0 rgba(0,0,0,.15);
+}
+
+.catMeta{
+  font-size: 12px;
+  opacity: .9;
+  color: rgba(255,255,255,.95);
+}
+
+.mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+}
+
+.hint{
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: .9;
+  color: white;
+}
+
+/* Admin table: add action column */
+.table.mini .row{
+  grid-template-columns:110px 1fr 220px 140px;
+}
+
+/* Messages */
+.msg{
+  font-weight:900;
+  color:white;
+}
+
+/* Empty states */
+.empty, .emptyTable{
+  padding: 14px;
+  text-align:center;
+  font-weight: 800;
+  color: rgba(255,255,255,.95);
+}
+
+/* Hidden helper */
+.hidden{display:none}
+
+/* Mobile */
+@media (max-width: 900px){
+  .adminGrid{grid-template-columns: 1fr;}
+  .adminWide{grid-column:auto;}
+}
+
 @media (max-width:760px){
   h1{font-size:34px}
   .row{grid-template-columns:120px 1fr 140px;}
+  .table.mini .row{grid-template-columns:90px 1fr 150px 120px}
+  .formGrid{grid-template-columns:1fr}
 }
