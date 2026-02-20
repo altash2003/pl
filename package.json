@@ -1,0 +1,12 @@
+{
+  "name": "stickntrade-pricelist",
+  "version": "1.0.0",
+  "description": "Primordial Unique Items Pricelist",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

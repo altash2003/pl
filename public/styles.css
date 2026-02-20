@@ -1,0 +1,38 @@
+body {
+  font-family: Arial;
+  background: linear-gradient(to bottom, #06d6e6, #00bcd4);
+  text-align: center;
+  padding: 30px;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+input, select {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+#items {
+  margin-top: 30px;
+}
+
+.item {
+  background: rgba(255,255,255,0.2);
+  margin: 10px auto;
+  padding: 15px;
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+}
