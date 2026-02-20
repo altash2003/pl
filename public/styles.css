@@ -16,12 +16,10 @@
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
 
-  /* table columns */
   --colIcon: 150px;
   --colPrice: 220px;
   --colAction: 180px;
 
-  /* typography */
   --fz-title: 22px;
   --fz-section: 20px;
   --fz-label: 15px;
@@ -92,31 +90,95 @@ h1{
   box-shadow: 0 0 0 4px rgba(255,255,255,.18);
 }
 
-/* ✅ PERFECT CENTER LOOK (selected value) */
-select.input{
-  text-align:center;
-  text-align-last:center;
-  -moz-text-align-last:center;
+/* ================= CUSTOM DROPDOWN (perfect center) ================= */
 
-  appearance:none;
-  -webkit-appearance:none;
-  -moz-appearance:none;
-
-  /* symmetrical padding fixes “right aligned” illusion */
-  padding:10px 38px;
-
-  background-image:
-    linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
-    linear-gradient(135deg, rgba(0,0,0,.55) 50%, transparent 50%);
-  background-position:
-    calc(100% - 18px) 50%,
-    calc(100% - 12px) 50%;
-  background-size:6px 6px;
-  background-repeat:no-repeat;
+select.input[data-custom-select="1"]{
+  position:absolute !important;
+  left:-99999px !important;
+  width:1px !important;
+  height:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
 }
 
-/* Center dropdown list items (may be OS-limited on Windows) */
-select.input option{ text-align:center; }
+.cselect{
+  position: relative;
+  min-width:220px;
+  font-family: inherit;
+}
+
+.cselectButton{
+  width:100%;
+  padding:10px 38px 10px 14px; /* room for arrow */
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.94);
+  font-size:var(--fz-input);
+  font-weight:800;
+  text-align:center;
+  cursor:pointer;
+  user-select:none;
+  outline:none;
+  transition: box-shadow .12s ease, border-color .12s ease, transform .08s ease;
+  position: relative;
+}
+
+.cselectButton:focus{
+  border-color: rgba(0,0,0,.28);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.18);
+}
+
+.cselectButton:active{ transform: translateY(1px); }
+
+.cselectArrow{
+  position:absolute;
+  right:12px;
+  top:50%;
+  width:0;
+  height:0;
+  transform: translateY(-50%);
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-top:6px solid rgba(0,0,0,.55);
+  pointer-events:none;
+}
+
+.cselectMenu{
+  position:absolute;
+  left:0;
+  right:0;
+  top: calc(100% + 8px);
+  background: rgba(255,255,255,.98);
+  border:1px solid rgba(0,0,0,.15);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow: 0 16px 30px rgba(0,0,0,.18);
+  z-index: 200;
+  display:none;
+}
+
+.cselect.open .cselectMenu{ display:block; }
+
+.cselectOption{
+  padding:10px 12px;
+  text-align:center; /* ✅ perfect center */
+  font-weight:800;
+  font-size:var(--fz-input);
+  cursor:pointer;
+  border-top:1px solid rgba(0,0,0,.08);
+  transition: background .12s ease, color .12s ease;
+}
+
+.cselectOption:first-child{ border-top:none; }
+
+.cselectOption:hover{
+  background: rgba(0,0,0,.06);
+}
+
+.cselectOption.active{
+  background: rgba(0,0,0,.55);
+  color:#fff;
+}
 
 /* ================= TABLES ================= */
 
@@ -127,7 +189,6 @@ select.input option{ text-align:center; }
   background: rgba(255,255,255,.14);
 }
 
-/* uppercase everything inside tables */
 .table .row{
   text-transform: uppercase;
 }
@@ -137,12 +198,11 @@ select.input option{ text-align:center; }
   display:grid;
   grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
-  justify-items:center; /* ✅ centers content inside each cell */
+  justify-items:center;
   text-align:center;
   border-top:1px solid var(--strokeSoft);
 }
 
-/* ✅ continuous vertical lines for 3-col table */
 .row::after{
   content:"";
   position:absolute;
@@ -171,7 +231,7 @@ select.input option{ text-align:center; }
 
 .row > div{
   width:100%;
-  padding:12px 10px; /* not too spaced */
+  padding:12px 10px;
   font-size:var(--fz-table);
   font-weight:900;
   color:#fff;
@@ -184,7 +244,6 @@ select.input option{ text-align:center; }
   text-shadow:none;
 }
 
-/* icon cell */
 .iconCell{
   width:100%;
   display:flex;
@@ -284,7 +343,6 @@ select.input option{ text-align:center; }
   max-width: 1100px;
 }
 
-/* cards */
 .card{
   background: var(--panel);
   border: 1px solid rgba(0,0,0,.10);
@@ -320,7 +378,7 @@ select.input option{ text-align:center; }
 .formGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap:12px; /* consistent spacing */
+  gap:12px;
 }
 
 .field span{
@@ -352,7 +410,7 @@ select.input option{ text-align:center; }
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* ✅ toolbar alignment */
+/* toolbar */
 .toolbar{
   display:grid;
   grid-template-columns: 260px 1fr 140px;
@@ -361,10 +419,8 @@ select.input option{ text-align:center; }
   margin:10px 0 12px;
 }
 
-.toolbar .input{
-  width:100%;
-  min-width:0;
-}
+.toolbar .input{ width:100%; min-width:0; }
+.toolbar .cselect{ width:100%; min-width:0; } /* custom dropdown in toolbar */
 
 /* ================= BUTTONS ================= */
 
@@ -403,8 +459,7 @@ select.input option{ text-align:center; }
   transform:none;
 }
 
-/* ================= FILE UPLOAD ================= */
-
+/* file upload */
 .fileWrap{
   display:flex;
   align-items:center;
@@ -440,8 +495,7 @@ select.input option{ text-align:center; }
   white-space: nowrap;
 }
 
-/* ================= CATEGORY LIST ================= */
-
+/* categories list */
 .list{
   display:flex;
   flex-direction:column;
@@ -484,7 +538,6 @@ select.input option{ text-align:center; }
   grid-template-columns: var(--colIcon) 1fr var(--colPrice) var(--colAction);
 }
 
-/* ✅ continuous vertical dividers for 4-col table */
 .table.mini .row::after{
   content:"";
   position:absolute;
@@ -498,13 +551,11 @@ select.input option{ text-align:center; }
       var(--strokeSoft) calc(var(--colIcon) + 1px),
       transparent calc(var(--colIcon) + 1px),
 
-      /* between NAME and PRICE */
       transparent calc(100% - (var(--colPrice) + var(--colAction))),
       var(--strokeSoft) calc(100% - (var(--colPrice) + var(--colAction))),
       var(--strokeSoft) calc(100% - (var(--colPrice) + var(--colAction)) + 1px),
       transparent calc(100% - (var(--colPrice) + var(--colAction)) + 1px),
 
-      /* between PRICE and ACTIONS */
       transparent calc(100% - var(--colAction)),
       var(--strokeSoft) calc(100% - var(--colAction)),
       var(--strokeSoft) calc(100% - var(--colAction) + 1px),
@@ -513,7 +564,6 @@ select.input option{ text-align:center; }
     );
 }
 
-/* action buttons centered in cell */
 .actionCell{
   width:100%;
   display:flex;
@@ -532,7 +582,6 @@ select.input option{ text-align:center; }
   backdrop-filter: blur(7px);
 }
 
-/* responsive modal sizing */
 .modalCard{
   position: relative;
   width: min(820px, 92vw);
@@ -561,7 +610,6 @@ select.input option{ text-align:center; }
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* center save button row inside modal */
 .modalActions{
   justify-content:center;
 }
@@ -614,23 +662,15 @@ select.input option{ text-align:center; }
     --fz-table: 18px;
   }
 
-  .row > div{
-    padding:10px 8px;
-  }
+  .row > div{ padding:10px 8px; }
 
   .adminGrid{ grid-template-columns:1fr; }
   .formGrid{ grid-template-columns:1fr; }
 
-  .toolbar{
-    grid-template-columns: 1fr;
-  }
+  .toolbar{ grid-template-columns: 1fr; }
 
-  .input{
-    min-width:0;
-    width:100%;
-  }
+  .input{ min-width:0; width:100%; }
+  .cselect{ min-width:0; width:100%; }
 
-  .modalCard{
-    margin: 6vh auto 0;
-  }
+  .modalCard{ margin: 6vh auto 0; }
 }
