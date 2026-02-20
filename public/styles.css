@@ -1,23 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800;900&display=swap");
+
 :root{
   --bg1:#06d6e6;
   --bg2:#00bcd4;
 
   --panel: rgba(255,255,255,.18);
   --panel2: rgba(255,255,255,.24);
-  --stroke: rgba(0,0,0,.18);
+
+  --stroke: rgba(0,0,0,.22);
+  --strokeSoft: rgba(0,0,0,.18);
 
   --btn: rgba(0,0,0,.30);
   --btnHover: rgba(0,0,0,.38);
 
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
+
+  /* column widths (match your grid-template-columns) */
+  --colIcon: 150px;
+  --colPrice: 220px;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
 }
@@ -57,19 +65,45 @@ h1{
   background: rgba(255,255,255,.94);
   min-width:220px;
   font-size:16px;
+  font-weight:700;
   text-align:center;
   outline:none;
 }
 
-/* Center selected option in select (important) */
+/* ✅ Center the SELECT’s displayed value */
 select.input{
-  text-align-last:center;
+  text-align:center;
+  text-align-last:center; /* Chrome/Edge */
+  -moz-text-align-last:center; /* Firefox */
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+
+  /* symmetric padding so center looks truly centered */
+  padding-left: 40px;
+  padding-right: 40px;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
+    linear-gradient(135deg, rgba(0,0,0,.55) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%,
+    0 0;
+  background-size:
+    6px 6px,
+    6px 6px,
+    100% 100%;
+  background-repeat:no-repeat;
 }
+
+/* Attempt to center dropdown list items (may be ignored by OS dropdown) */
 select.input option{
   text-align:center;
 }
 
-/* ---------- TABLE (viewer + admin) ---------- */
+/* ---------- TABLE ---------- */
 .table{
   border-radius:16px;
   overflow:hidden;
@@ -84,11 +118,41 @@ select.input option{
 
 /* Grid row */
 .row{
+  position: relative; /* needed for continuous grid overlay */
   display:grid;
-  grid-template-columns: 150px 1fr 220px;
+  grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
-  border-top:1px solid rgba(0,0,0,.18);
   text-align:center;
+
+  /* horizontal line */
+  border-top:1px solid var(--strokeSoft);
+}
+
+/* ✅ continuous vertical lines (NOT per-cell) */
+.row::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+
+  /* draw 2 vertical lines:
+     - after icon col: var(--colIcon)
+     - before price col: calc(100% - var(--colPrice))
+  */
+  background:
+    linear-gradient(to right,
+      transparent 0,
+      transparent var(--colIcon),
+      var(--strokeSoft) var(--colIcon),
+      var(--strokeSoft) calc(var(--colIcon) + 1px),
+      transparent calc(var(--colIcon) + 1px),
+
+      transparent calc(100% - var(--colPrice)),
+      var(--strokeSoft) calc(100% - var(--colPrice)),
+      var(--strokeSoft) calc(100% - var(--colPrice) + 1px),
+      transparent calc(100% - var(--colPrice) + 1px),
+      transparent 100%
+    );
 }
 
 /* HEADERS: bold black */
@@ -97,25 +161,19 @@ select.input option{
   border-top:none;
 }
 
-.row.head > div{
-  color:#000;
-  font-weight:950;
-  text-shadow:none;
-}
-
-/* Cells: bigger font, tighter padding */
 .row > div{
-  padding:12px 12px;               /* less space */
-  border-right:1px solid rgba(0,0,0,.18);
-  font-size:20px;                  /* bigger */
+  padding:12px 12px;   /* tighter spacing */
+  font-size:20px;      /* bigger */
   font-weight:900;
   color: rgba(255,255,255,.98);
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* Keep borders continuous */
-.row > div:last-child{
-  border-right:none;
+/* header text */
+.row.head > div{
+  color:#000;
+  font-weight:950;
+  text-shadow:none;
 }
 
 /* Icon */
@@ -134,15 +192,9 @@ select.input option{
   background: rgba(255,255,255,.18);
 }
 
-/* Item names are white (explicit) */
-.cellName{
-  color: rgba(255,255,255,.98);
-}
-
-/* Price cells white too */
-.cellPrice{
-  color: rgba(255,255,255,.98);
-}
+/* Keep item name white (explicit) */
+.cellName{ color: rgba(255,255,255,.98); }
+.cellPrice{ color: rgba(255,255,255,.98); }
 
 /* Footer count */
 .foot{
@@ -153,7 +205,7 @@ select.input option{
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* ---------- ADMIN UI ---------- */
+/* ---------- ADMIN UI (unchanged styling blocks you already use) ---------- */
 .adminTop{
   position: sticky;
   top: 0;
@@ -209,7 +261,6 @@ select.input option{
   max-width: 1100px;
 }
 
-/* Cards */
 .card{
   background: var(--panel);
   border:1px solid rgba(0,0,0,.12);
@@ -219,7 +270,6 @@ select.input option{
   backdrop-filter: blur(10px);
 }
 
-/* Hierarchy block */
 .sectionBlock{
   background: var(--panel2);
   border: 1px solid rgba(0,0,0,.10);
@@ -235,7 +285,6 @@ select.input option{
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* Admin grid */
 .adminGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -246,7 +295,6 @@ select.input option{
   grid-column: 1 / -1;
 }
 
-/* Forms */
 .formGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -285,7 +333,6 @@ select.input option{
   margin: 10px 0 12px;
 }
 
-/* Buttons */
 .btn{
   padding:11px 14px;
   border-radius:14px;
@@ -317,7 +364,6 @@ select.input option{
   box-shadow:none;
 }
 
-/* File input */
 .fileWrap{
   display:flex;
   align-items:center;
@@ -348,7 +394,6 @@ select.input option{
   white-space: nowrap;
 }
 
-/* Lists */
 .list{
   display:flex;
   flex-direction:column;
@@ -383,12 +428,10 @@ select.input option{
   font-size: 11px;
 }
 
-/* Admin table columns */
 .table.mini .row{
-  grid-template-columns: 150px 1fr 220px 160px;
+  grid-template-columns: var(--colIcon) 1fr var(--colPrice) 160px;
 }
 
-/* Bigger icons in admin list */
 .smallIcon{
   width: 60px;
   height: 60px;
@@ -396,7 +439,6 @@ select.input option{
   object-fit: cover;
 }
 
-/* Toasts */
 .toastHost{
   position: fixed;
   right: 14px;
@@ -421,7 +463,6 @@ select.input option{
 .toast.good{ background: var(--good); }
 .toast.bad{ background: var(--bad); }
 
-/* Empty states */
 .empty, .emptyTable{
   padding: 12px;
   text-align:center;
@@ -430,7 +471,6 @@ select.input option{
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* Hidden helper */
 .hidden{display:none}
 
 /* Responsive */
@@ -442,10 +482,16 @@ select.input option{
 @media (max-width:760px){
   h1{font-size:34px}
 
-  .row{ grid-template-columns:120px 1fr 150px; }
-  .row > div{ font-size:18px; padding:10px 8px; }
+  :root{
+    --colIcon: 120px;
+    --colPrice: 150px;
+  }
 
-  .table.mini .row{ grid-template-columns:110px 1fr 170px 120px; }
+  .row > div{
+    font-size:18px;
+    padding:10px 8px;
+  }
+
   .formGrid{ grid-template-columns: 1fr; }
   .inlineForm{ flex-direction: column; align-items: stretch; }
   .toolbar{ flex-direction: column; align-items: stretch; }
