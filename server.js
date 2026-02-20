@@ -31,7 +31,6 @@ const ItemSchema = new mongoose.Schema({
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
   name: { type: String, required: true, trim: true },
   price: { type: String, required: true, trim: true },
-  // store icon as base64 data URL (simple upload, no external storage)
   iconDataUrl: { type: String, required: true }
 }, { timestamps: true });
 
@@ -39,7 +38,7 @@ const Category = mongoose.model("Category", CategorySchema);
 const Item = mongoose.model("Item", ItemSchema);
 
 // --- App middleware ---
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "8mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: SESSION_SECRET || "dev_secret_change_me",
@@ -56,7 +55,7 @@ const upload = multer({
   limits: { fileSize: 1 * 1024 * 1024 } // 1MB
 });
 
-// --- Auth helpers ---
+// --- Auth helper ---
 function requireAdmin(req, res, next) {
   if (req.session?.isAdmin) return next();
   return res.status(401).json({ error: "Unauthorized" });
@@ -65,7 +64,6 @@ function requireAdmin(req, res, next) {
 // --- Auth routes ---
 app.post("/api/admin/login", (req, res) => {
   const { username, password } = req.body;
-
   if (username === ADMIN_USER && password === ADMIN_PASS) {
     req.session.isAdmin = true;
     return res.json({ ok: true });
@@ -82,7 +80,7 @@ app.get("/api/admin/me", (req, res) => {
 });
 
 // --- Public read-only endpoints ---
-app.get("/api/categories", async (req, res) => {
+app.get("/api/categories", async (_req, res) => {
   const cats = await Category.find().sort({ name: 1 });
   res.json(cats);
 });
@@ -98,7 +96,7 @@ app.get("/api/items", async (req, res) => {
   res.json(items);
 });
 
-// --- Admin endpoints (CRUD) ---
+// --- Admin endpoints (Categories) ---
 app.post("/api/categories", requireAdmin, async (req, res) => {
   const name = String(req.body.name || "").trim();
   if (!name) return res.status(400).json({ error: "Category name required" });
@@ -106,7 +104,7 @@ app.post("/api/categories", requireAdmin, async (req, res) => {
   try {
     const cat = await Category.create({ name });
     res.json(cat);
-  } catch (e) {
+  } catch {
     return res.status(400).json({ error: "Category already exists or invalid." });
   }
 });
@@ -121,6 +119,7 @@ app.delete("/api/categories/:id", requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
+// --- Admin endpoints (Items) ---
 app.post("/api/items", requireAdmin, upload.single("icon"), async (req, res) => {
   const { categoryId, name, price } = req.body;
 
@@ -145,6 +144,35 @@ app.post("/api/items", requireAdmin, upload.single("icon"), async (req, res) => 
     price: String(price).trim(),
     iconDataUrl
   });
+
+  res.json(item);
+});
+
+/* ✅ EDIT ITEM (name/price/category + optional icon) */
+app.put("/api/items/:id", requireAdmin, upload.single("icon"), async (req, res) => {
+  const { id } = req.params;
+  const { categoryId, name, price } = req.body;
+
+  const update = {};
+  if (categoryId) update.categoryId = categoryId;
+  if (name) update.name = String(name).trim();
+  if (price) update.price = String(price).trim();
+
+  if (req.file) {
+    const mime = req.file.mimetype || "image/png";
+    if (!mime.startsWith("image/")) {
+      return res.status(400).json({ error: "Icon must be an image" });
+    }
+    const base64 = req.file.buffer.toString("base64");
+    update.iconDataUrl = `data:${mime};base64,${base64}`;
+  }
+
+  if (Object.keys(update).length === 0) {
+    return res.status(400).json({ error: "Nothing to update." });
+  }
+
+  const item = await Item.findByIdAndUpdate(id, update, { new: true });
+  if (!item) return res.status(404).json({ error: "Item not found." });
 
   res.json(item);
 });
