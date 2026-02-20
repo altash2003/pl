@@ -16,7 +16,7 @@
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
 
-  /* column widths (match your grid-template-columns) */
+  /* column widths */
   --colIcon: 150px;
   --colPrice: 220px;
 }
@@ -30,7 +30,8 @@ body{
   min-height:100vh;
 }
 
-/* ---------- VIEWER HEADER ---------- */
+/* ================= VIEWER ================= */
+
 .top{
   padding:18px 16px 10px;
   text-align:center;
@@ -39,7 +40,7 @@ body{
 h1{
   margin:0;
   font-size:42px;
-  color: rgba(255,255,255,.98);
+  color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
@@ -50,6 +51,7 @@ h1{
 }
 
 /* ---------- INPUTS ---------- */
+
 .controls{
   display:flex;
   gap:10px;
@@ -70,40 +72,34 @@ h1{
   outline:none;
 }
 
-/* ✅ Center the SELECT’s displayed value */
+/* Center selected value properly */
 select.input{
   text-align:center;
-  text-align-last:center; /* Chrome/Edge */
-  -moz-text-align-last:center; /* Firefox */
+  text-align-last:center;
+  -moz-text-align-last:center;
   appearance:none;
   -webkit-appearance:none;
   -moz-appearance:none;
 
-  /* symmetric padding so center looks truly centered */
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left:40px;
+  padding-right:40px;
 
   background-image:
     linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
-    linear-gradient(135deg, rgba(0,0,0,.55) 50%, transparent 50%),
-    linear-gradient(to right, transparent, transparent);
+    linear-gradient(135deg, rgba(0,0,0,.55) 50%, transparent 50%);
   background-position:
     calc(100% - 18px) 50%,
-    calc(100% - 12px) 50%,
-    0 0;
-  background-size:
-    6px 6px,
-    6px 6px,
-    100% 100%;
+    calc(100% - 12px) 50%;
+  background-size:6px 6px;
   background-repeat:no-repeat;
 }
 
-/* Attempt to center dropdown list items (may be ignored by OS dropdown) */
 select.input option{
   text-align:center;
 }
 
 /* ---------- TABLE ---------- */
+
 .table{
   border-radius:16px;
   overflow:hidden;
@@ -111,34 +107,26 @@ select.input option{
   background: rgba(255,255,255,.14);
 }
 
-/* UPPERCASE in the grid */
+/* uppercase everything inside table */
 .table .row{
   text-transform: uppercase;
 }
 
-/* Grid row */
 .row{
-  position: relative; /* needed for continuous grid overlay */
+  position: relative;
   display:grid;
   grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
   text-align:center;
-
-  /* horizontal line */
   border-top:1px solid var(--strokeSoft);
 }
 
-/* ✅ continuous vertical lines (NOT per-cell) */
+/* continuous vertical grid lines */
 .row::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-
-  /* draw 2 vertical lines:
-     - after icon col: var(--colIcon)
-     - before price col: calc(100% - var(--colPrice))
-  */
   background:
     linear-gradient(to right,
       transparent 0,
@@ -155,28 +143,26 @@ select.input option{
     );
 }
 
-/* HEADERS: bold black */
 .row.head{
   background: linear-gradient(#f2f2f2,#cfcfcf);
   border-top:none;
 }
 
 .row > div{
-  padding:12px 12px;   /* tighter spacing */
-  font-size:20px;      /* bigger */
+  padding:12px 12px;
+  font-size:20px;
   font-weight:900;
-  color: rgba(255,255,255,.98);
+  color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* header text */
 .row.head > div{
   color:#000;
   font-weight:950;
   text-shadow:none;
 }
 
-/* Icon */
+/* icon */
 .iconCell{
   display:flex;
   justify-content:center;
@@ -192,11 +178,9 @@ select.input option{
   background: rgba(255,255,255,.18);
 }
 
-/* Keep item name white (explicit) */
-.cellName{ color: rgba(255,255,255,.98); }
-.cellPrice{ color: rgba(255,255,255,.98); }
+.cellName{ color:white; }
+.cellPrice{ color:white; }
 
-/* Footer count */
 .foot{
   margin-top:10px;
   color:white;
@@ -205,7 +189,8 @@ select.input option{
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* ---------- ADMIN UI (unchanged styling blocks you already use) ---------- */
+/* ================= ADMIN ================= */
+
 .adminTop{
   position: sticky;
   top: 0;
@@ -222,48 +207,42 @@ select.input option{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 12px;
 }
 
 .adminBrand{
   display:flex;
   align-items:center;
-  gap: 12px;
-  color: white;
+  gap:12px;
+  color:white;
 }
 
 .dot{
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.95);
-  box-shadow: 0 0 0 5px rgba(255,255,255,.16);
+  width:14px;
+  height:14px;
+  border-radius:999px;
+  background:white;
 }
 
 .adminTitle{
-  font-weight: 950;
-  letter-spacing: .6px;
-  font-size: 16px;
+  font-weight:950;
+  font-size:16px;
 }
 
 .adminSub{
-  font-size: 13px;
-  opacity: .92;
+  font-size:13px;
 }
 
 .adminActions{
   display:flex;
-  gap: 10px;
-  align-items:center;
+  gap:10px;
 }
 
 .adminWrap{
-  max-width: 1100px;
+  max-width:1100px;
 }
 
 .card{
   background: var(--panel);
-  border:1px solid rgba(0,0,0,.12);
   border-radius:16px;
   padding:14px;
   margin-bottom:14px;
@@ -272,23 +251,22 @@ select.input option{
 
 .sectionBlock{
   background: var(--panel2);
-  border: 1px solid rgba(0,0,0,.10);
   border-radius:14px;
   padding:12px;
 }
 
 .sectionTitle{
-  margin: 0 0 10px;
-  font-size: 22px;
-  font-weight: 950;
-  color: rgba(255,255,255,.98);
+  margin:0 0 10px;
+  font-size:22px;
+  font-weight:950;
+  color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
 .adminGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap:14px;
 }
 
 .adminWide{
@@ -298,31 +276,29 @@ select.input option{
 .formGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap:10px;
 }
 
 .field span{
   display:block;
-  font-size: 16px;
-  font-weight: 950;
-  color: rgba(255,255,255,.98);
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-  margin: 0 0 6px;
+  font-size:16px;
+  font-weight:950;
+  color:white;
+  margin-bottom:6px;
 }
 
 .inlineForm{
   display:flex;
   gap:10px;
   align-items:center;
-  margin-bottom: 10px;
+  margin-bottom:10px;
 }
 
 .rowButtons{
   display:flex;
-  align-items:center;
   gap:10px;
-  margin-top: 10px;
-  flex-wrap: wrap;
+  margin-top:10px;
+  flex-wrap:wrap;
 }
 
 .toolbar{
@@ -330,9 +306,10 @@ select.input option{
   gap:10px;
   flex-wrap:wrap;
   justify-content:center;
-  margin: 10px 0 12px;
+  margin:10px 0 12px;
 }
 
+/* buttons */
 .btn{
   padding:11px 14px;
   border-radius:14px;
@@ -341,17 +318,13 @@ select.input option{
   color:white;
   font-weight:950;
   cursor:pointer;
-  box-shadow: 0 8px 18px rgba(0,0,0,.18);
-  transition: transform .06s ease, background .12s ease;
 }
 
 .btn:hover{ background: var(--btnHover); }
-.btn:active{ transform: translateY(1px); }
 
 .btn.ghost{
   background: rgba(255,255,255,.26);
   color:#0b0b0b;
-  font-weight:950;
 }
 
 .btn.danger{
@@ -361,130 +334,49 @@ select.input option{
 .btn.small{
   padding:9px 10px;
   border-radius:12px;
-  box-shadow:none;
 }
 
-.fileWrap{
-  display:flex;
-  align-items:center;
-  gap: 10px;
-  flex-wrap: wrap;
+/* modal */
+.modal{ position: fixed; inset:0; z-index:9998; }
+.modalBackdrop{
+  position:absolute; inset:0;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
 }
-
-.fileBtn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:11px 14px;
-  border-radius:14px;
-  background: rgba(255,255,255,.26);
-  color:#0b0b0b;
-  font-weight:950;
-  cursor:pointer;
-  border: 1px solid rgba(0,0,0,.12);
-}
-
-.fileName{
-  font-weight: 950;
-  color: rgba(255,255,255,.96);
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-  max-width: 100%;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-}
-
-.catRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(0,0,0,.10);
-}
-
-.catName{
-  font-weight: 950;
-  color: rgba(255,255,255,.98);
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
-
-.catMeta{
-  font-size: 12px;
-  color: rgba(255,255,255,.96);
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
-
-.mono{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 11px;
-}
-
-.table.mini .row{
-  grid-template-columns: var(--colIcon) 1fr var(--colPrice) 160px;
-}
-
-.smallIcon{
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  object-fit: cover;
-}
-
-.toastHost{
-  position: fixed;
-  right: 14px;
-  bottom: 14px;
-  z-index: 9999;
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-  max-width: min(420px, calc(100vw - 28px));
-}
-
-.toast{
-  padding: 12px 14px;
+.modalCard{
+  position: relative;
+  width: min(820px, calc(100vw - 28px));
+  margin: 80px auto 0;
+  background: rgba(255,255,255,.18);
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(0,0,0,.22);
-  color: rgba(255,255,255,.98);
-  font-weight: 950;
-  box-shadow: 0 10px 22px rgba(0,0,0,.22);
+  padding: 14px;
+  backdrop-filter: blur(10px);
+}
+.modalHead{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.modalTitle{
+  font-weight:950;
+  font-size:20px;
+  color:white;
 }
 
-.toast.good{ background: var(--good); }
-.toast.bad{ background: var(--bad); }
-
-.empty, .emptyTable{
-  padding: 12px;
-  text-align:center;
-  font-weight: 950;
-  color: rgba(255,255,255,.98);
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
+.actionCell{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
-.hidden{display:none}
-
-/* Responsive */
-@media (max-width: 980px){
-  .adminGrid{ grid-template-columns: 1fr; }
-  .adminWide{ grid-column:auto; }
-}
-
+/* responsive */
 @media (max-width:760px){
   h1{font-size:34px}
 
   :root{
-    --colIcon: 120px;
-    --colPrice: 150px;
+    --colIcon:120px;
+    --colPrice:150px;
   }
 
   .row > div{
@@ -492,13 +384,6 @@ select.input option{
     padding:10px 8px;
   }
 
-  .formGrid{ grid-template-columns: 1fr; }
-  .inlineForm{ flex-direction: column; align-items: stretch; }
-  .toolbar{ flex-direction: column; align-items: stretch; }
-  .input{ min-width: 0; width: 100%; }
-}
-
-@media (max-width:420px){
-  .adminTopInner{ flex-direction: column; align-items: flex-start; }
-  .adminActions{ width:100%; justify-content: flex-end; }
+  .adminGrid{ grid-template-columns:1fr; }
+  .formGrid{ grid-template-columns:1fr; }
 }
