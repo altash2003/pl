@@ -92,14 +92,14 @@
             <div class="field">
               <span>Icon</span>
               <div class="fileWrap">
-                <label class="fileBtn" for="itemIcon">Upload</label>
+                <label class="fileBtn" for="itemIcon">Upload Icon</label>
                 <input id="itemIcon" class="hidden" type="file" accept="image/*" />
                 <div id="fileName" class="fileName">No file</div>
               </div>
             </div>
           </div>
 
-          <div class="rowButtons" style="margin-top:12px;">
+          <div class="rowButtons">
             <button id="addItemBtn" class="btn">Add Item</button>
             <div class="msg" id="itemMsg"></div>
           </div>
@@ -127,6 +127,7 @@
   <!-- EDIT MODAL -->
   <div class="modal hidden" id="editModal" aria-hidden="true">
     <div class="modalBackdrop" id="editBackdrop"></div>
+
     <div class="modalCard" role="dialog" aria-modal="true">
       <div class="modalHead">
         <div class="modalTitle">Edit Item</div>
@@ -153,14 +154,14 @@
           <div class="field">
             <span>Change Icon (optional)</span>
             <div class="fileWrap">
-              <label class="fileBtn" for="editIcon">Upload</label>
+              <label class="fileBtn" for="editIcon">Upload Icon</label>
               <input id="editIcon" class="hidden" type="file" accept="image/*" />
               <div id="editFileName" class="fileName">No file</div>
             </div>
           </div>
         </div>
 
-        <div class="rowButtons" style="margin-top:12px;">
+        <div class="rowButtons modalActions">
           <button id="saveEditBtn" class="btn">Save Changes</button>
           <div class="msg" id="editMsg"></div>
         </div>
