@@ -30,11 +30,15 @@ function render(list) {
   for (const it of list) {
     const row = document.createElement("div");
     row.className = "row";
+
     row.innerHTML = `
-      <div class="iconCell"><img class="icon" src="${it.iconDataUrl}" alt=""></div>
-      <div class="nameCell">${escapeHtml(it.name)}</div>
-      <div class="priceCell right">${escapeHtml(it.price)}</div>
+      <div class="iconCell">
+        <img class="icon" src="${it.iconDataUrl}" alt="">
+      </div>
+      <div>${escapeHtml(it.name)}</div>
+      <div>${escapeHtml(it.price)} TC</div>
     `;
+
     wrap.appendChild(row);
   }
 
@@ -43,8 +47,10 @@ function render(list) {
 
 function escapeHtml(str) {
   return String(str ?? "")
-    .replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;").replaceAll('"', "&quot;")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
 
