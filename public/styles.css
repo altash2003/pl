@@ -1,98 +1,120 @@
 :root{
-  --bg1:#06d6e6; --bg2:#00bcd4;
-  --card: rgba(255,255,255,.16);
+  --bg1:#06d6e6;
+  --bg2:#00bcd4;
   --line: rgba(0,0,0,.18);
-  --text:#0b0b0b;
 }
 
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
-  color:var(--text);
+  color:#0b0b0b;
 }
 
-.top{padding:22px 16px;text-align:center}
-h1{margin:0 0 8px;font-size:42px}
-.sub{margin:0;opacity:.85}
-.wrap{max-width:980px;margin:0 auto;padding:14px 16px 30px}
+/* HEADER */
+.top{
+  padding:22px 16px;
+  text-align:center;
+}
 
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
+h1{
+  margin:0 0 8px;
+  font-size:42px;
+}
+
+.sub{
+  margin:0;
+  opacity:.85;
+}
+
+.wrap{
+  max-width:980px;
+  margin:0 auto;
+  padding:14px 16px 30px;
+}
+
+/* CONTROLS */
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:10px 0 14px;
+}
+
 .input{
-  padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);
-  background: rgba(255,255,255,.92); min-width: 220px;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.15);
+  background: rgba(255,255,255,.92);
+  min-width:220px;
+  font-size:16px;
+  text-align:center;
 }
 
+/* TABLE */
 .table{
-  border-radius:18px; overflow:hidden;
+  border-radius:18px;
+  overflow:hidden;
   border:2px solid rgba(0,0,0,.18);
   background: rgba(255,255,255,.12);
 }
-.table.mini .row{grid-template-columns:110px 1fr 220px 120px}
 
+/* GRID ROW */
 .row{
   display:grid;
-  grid-template-columns:160px 1fr 220px;
+  grid-template-columns: 160px 1fr 220px;
   align-items:center;
   border-top:1px solid var(--line);
+  text-align:center; /* CENTER ALL TEXT */
 }
+
 .row.head{
   background: linear-gradient(#f2f2f2,#cfcfcf);
   border-top:none;
-  font-weight:900;
+  font-weight:800;
+  font-size:18px; /* SAME SIZE */
 }
-.row > div{padding:14px;border-right:1px solid var(--line)}
-.row > div:last-child{border-right:none}
-.right{text-align:right}
 
-.iconCell{display:flex;justify-content:center}
+.row > div{
+  padding:16px 14px;
+  border-right:1px solid var(--line);
+  font-size:18px; /* PERFECT TABLE SIZE */
+  font-weight:700;
+}
+
+.row > div:last-child{
+  border-right:none;
+}
+
+/* ICON */
+.iconCell{
+  display:flex;
+  justify-content:center;
+}
+
 .icon{
-  width:62px;height:62px;border-radius:14px;object-fit:cover;
+  width:62px;
+  height:62px;
+  border-radius:14px;
+  object-fit:cover;
   border:2px solid rgba(255,255,255,.7);
   box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
-.smallIcon{width:44px;height:44px;border-radius:12px}
 
-.nameCell,.priceCell{font-weight:900;color:white;text-shadow:0 2px 0 rgba(0,0,0,.15)}
-.foot{margin-top:10px;color:white;font-weight:800;text-align:right}
-
-.adminLink{margin-top:18px;text-align:center}
-.adminLink a{color:white;font-weight:900;text-decoration:none}
-
-.card{
-  background: var(--card);
-  border:1px solid rgba(0,0,0,.14);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:14px;
-  backdrop-filter: blur(8px);
-}
-.hidden{display:none}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rowFlex{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.rowFlex.thin{padding:8px 0}
-.sep{border:none;border-top:1px solid rgba(255,255,255,.25);margin:14px 0}
-.msg{margin-top:10px;font-weight:800;color:white}
-
-.btn{
-  padding:10px 14px;border-radius:12px;border:none;
-  background: rgba(0,0,0,.25); color:white; font-weight:900; cursor:pointer;
-}
-.btn.ghost{background: rgba(255,255,255,.25); color:#0b0b0b}
-.btn.danger{background: rgba(255,0,0,.35)}
-.btn.small{padding:8px 10px;border-radius:10px}
-
-.pill{
-  display:inline-block;margin-top:10px;
-  padding:10px 14px;border-radius:999px;
-  background: rgba(0,0,0,.18); color:white; text-decoration:none; font-weight:900;
+/* FOOTER COUNT */
+.foot{
+  margin-top:10px;
+  color:white;
+  font-weight:800;
+  text-align:center;
 }
 
+/* MOBILE */
 @media (max-width:760px){
-  .grid2{grid-template-columns:1fr}
   h1{font-size:34px}
-  .row{grid-template-columns:120px 1fr 140px}
-  .table.mini .row{grid-template-columns:90px 1fr 150px 110px}
+  .row{grid-template-columns:120px 1fr 140px;}
 }
