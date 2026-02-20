@@ -19,7 +19,7 @@
       </div>
 
       <div class="adminActions">
-        <a class="btn ghost" href="/">View Pricelist</a>
+        <a class="btn ghost" href="/">View</a>
         <button id="logoutBtn" class="btn danger hidden">Logout</button>
       </div>
     </div>
@@ -30,18 +30,17 @@
     <!-- LOGIN -->
     <section class="card" id="loginCard">
       <h2 class="sectionTitle">Login</h2>
-      <p class="muted">Only admins can access this panel.</p>
 
       <div class="sectionBlock">
         <div class="formGrid">
           <label class="field">
             <span>Username</span>
-            <input id="user" class="input" placeholder="e.g. ashley" autocomplete="username" />
+            <input id="user" class="input" placeholder="Username" autocomplete="username" />
           </label>
 
           <label class="field">
             <span>Password</span>
-            <input id="pass" class="input" placeholder="Enter your admin password" type="password" autocomplete="current-password" />
+            <input id="pass" class="input" placeholder="Password" type="password" autocomplete="current-password" />
           </label>
         </div>
 
@@ -58,25 +57,20 @@
       <!-- Categories -->
       <section class="card">
         <h2 class="sectionTitle">Categories</h2>
-        <p class="muted">Add categories to group items (example: Primordial Uniques).</p>
 
         <div class="sectionBlock">
           <div class="inlineForm">
-            <input id="newCat" class="input" placeholder="Category name (e.g. Primordial Uniques)" />
+            <input id="newCat" class="input" placeholder="Category name" />
             <button id="addCatBtn" class="btn">Add Category</button>
           </div>
 
           <div id="catList" class="list"></div>
-          <div class="hint muted" style="margin:10px 0 0;">
-            Tip: A category must be empty before it can be deleted.
-          </div>
         </div>
       </section>
 
       <!-- Add Item -->
       <section class="card">
         <h2 class="sectionTitle">Add Item</h2>
-        <p class="muted">Upload an icon, enter item name, and set TC price.</p>
 
         <div class="sectionBlock">
           <div class="formGrid">
@@ -86,26 +80,26 @@
             </label>
 
             <label class="field">
-              <span>Item name</span>
-              <input id="itemName" class="input" placeholder="e.g. Pacman Hair" />
+              <span>Item Name</span>
+              <input id="itemName" class="input" placeholder="Name" />
             </label>
 
             <label class="field">
-              <span>Price (TC)</span>
-              <input id="itemPrice" class="input" placeholder="e.g. 60000-100000 or 60,000-100,000" />
+              <span>Price</span>
+              <input id="itemPrice" class="input" placeholder="60,000-100,000" />
             </label>
 
             <div class="field">
-              <span>Item icon</span>
+              <span>Icon</span>
               <div class="fileWrap">
-                <label class="fileBtn" for="itemIcon">Upload icon</label>
+                <label class="fileBtn" for="itemIcon">Upload</label>
                 <input id="itemIcon" class="hidden" type="file" accept="image/*" />
-                <div id="fileName" class="fileName">No file selected</div>
+                <div id="fileName" class="fileName">No file</div>
               </div>
             </div>
           </div>
 
-          <div class="rowButtons" style="margin-top:14px;">
+          <div class="rowButtons" style="margin-top:12px;">
             <button id="addItemBtn" class="btn">Add Item</button>
             <div class="msg" id="itemMsg"></div>
           </div>
@@ -115,12 +109,11 @@
       <!-- Items Table -->
       <section class="card adminWide">
         <h2 class="sectionTitle">Items</h2>
-        <p class="muted">Filter, search, and delete items. (Viewer mode is read-only.)</p>
 
         <div class="sectionBlock">
           <div class="toolbar">
             <select id="filterCat" class="input"></select>
-            <input id="searchItems" class="input" placeholder="Search by item name (e.g. Pacman)" />
+            <input id="searchItems" class="input" placeholder="Search..." />
             <button id="refreshBtn" class="btn ghost">Refresh</button>
           </div>
 
@@ -131,7 +124,6 @@
     </section>
   </main>
 
-  <!-- toast host -->
   <div class="toastHost" id="toastHost"></div>
 
   <script src="./admin.js"></script>
