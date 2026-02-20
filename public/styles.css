@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&display=swap");
 
 :root{
   --bg1:#06d6e6;
@@ -16,16 +16,23 @@
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
 
-  /* column widths */
+  /* table columns */
   --colIcon: 150px;
   --colPrice: 220px;
+
+  /* typography scale (consistent) */
+  --fz-title: 22px;
+  --fz-section: 20px;
+  --fz-label: 15px;
+  --fz-input: 16px;
+  --fz-table: 20px;
 }
 
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Montserrat", Arial, sans-serif;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
 }
@@ -40,6 +47,7 @@ body{
 h1{
   margin:0;
   font-size:42px;
+  font-weight:900;
   color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
@@ -57,6 +65,7 @@ h1{
   gap:10px;
   flex-wrap:wrap;
   justify-content:center;
+  align-items:center;
   margin:10px 0 12px;
 }
 
@@ -66,13 +75,14 @@ h1{
   border:1px solid rgba(0,0,0,.15);
   background: rgba(255,255,255,.94);
   min-width:220px;
-  font-size:16px;
+  font-size:var(--fz-input);
   font-weight:700;
   text-align:center;
   outline:none;
+  font-family: inherit; /* ✅ consistent */
 }
 
-/* Center selected value properly */
+/* ✅ Center selected value properly */
 select.input{
   text-align:center;
   text-align-last:center;
@@ -81,8 +91,9 @@ select.input{
   -webkit-appearance:none;
   -moz-appearance:none;
 
-  padding-left:40px;
-  padding-right:40px;
+  /* symmetrical padding keeps the text visually centered */
+  padding-left:42px;
+  padding-right:42px;
 
   background-image:
     linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
@@ -112,16 +123,18 @@ select.input option{
   text-transform: uppercase;
 }
 
+/* ✅ TRUE center alignment for ALL cells (icon + name + price + actions) */
 .row{
   position: relative;
   display:grid;
   grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
-  text-align:center;
+  justify-items:center;     /* ✅ centers contents inside each grid cell */
+  text-align:center;        /* ✅ centers text */
   border-top:1px solid var(--strokeSoft);
 }
 
-/* continuous vertical grid lines */
+/* ✅ continuous vertical grid lines */
 .row::after{
   content:"";
   position:absolute;
@@ -143,19 +156,22 @@ select.input option{
     );
 }
 
+/* header row */
 .row.head{
   background: linear-gradient(#f2f2f2,#cfcfcf);
   border-top:none;
 }
 
 .row > div{
-  padding:12px 12px;
-  font-size:20px;
+  padding:12px 10px; /* tighter */
+  font-size:var(--fz-table);
   font-weight:900;
   color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
+  width:100%;
 }
 
+/* header cell text bold black */
 .row.head > div{
   color:#000;
   font-weight:950;
@@ -166,6 +182,8 @@ select.input option{
 .iconCell{
   display:flex;
   justify-content:center;
+  align-items:center;
+  width:100%;
 }
 
 .icon{
@@ -207,6 +225,7 @@ select.input option{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap: 10px;
 }
 
 .adminBrand{
@@ -225,22 +244,26 @@ select.input option{
 
 .adminTitle{
   font-weight:950;
-  font-size:16px;
+  font-size:var(--fz-title); /* ✅ consistent */
 }
 
 .adminSub{
   font-size:13px;
+  font-weight:700;
+  opacity:.95;
 }
 
 .adminActions{
   display:flex;
   gap:10px;
+  align-items:center;
 }
 
 .adminWrap{
   max-width:1100px;
 }
 
+/* cards */
 .card{
   background: var(--panel);
   border-radius:16px;
@@ -249,6 +272,7 @@ select.input option{
   backdrop-filter: blur(10px);
 }
 
+/* section block */
 .sectionBlock{
   background: var(--panel2);
   border-radius:14px;
@@ -257,12 +281,13 @@ select.input option{
 
 .sectionTitle{
   margin:0 0 10px;
-  font-size:22px;
+  font-size:var(--fz-section); /* ✅ consistent */
   font-weight:950;
   color:white;
   text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
+/* layout */
 .adminGrid{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -281,8 +306,8 @@ select.input option{
 
 .field span{
   display:block;
-  font-size:16px;
-  font-weight:950;
+  font-size:var(--fz-label);  /* ✅ consistent labels */
+  font-weight:800;
   color:white;
   margin-bottom:6px;
 }
@@ -299,15 +324,21 @@ select.input option{
   gap:10px;
   margin-top:10px;
   flex-wrap:wrap;
+  justify-content:flex-start;
+  align-items:center;
 }
 
+/* ✅ toolbar alignment: consistent widths + centered layout */
 .toolbar{
-  display:flex;
+  display:grid;
+  grid-template-columns: 260px 1fr 140px;
   gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
+  align-items:center;
+  justify-items:stretch;
   margin:10px 0 12px;
 }
+
+.toolbar .input{ min-width: 0; width:100%; }
 
 /* buttons */
 .btn{
@@ -316,8 +347,9 @@ select.input option{
   border:none;
   background: var(--btn);
   color:white;
-  font-weight:950;
+  font-weight:900;
   cursor:pointer;
+  font-family: inherit; /* ✅ consistent */
 }
 
 .btn:hover{ background: var(--btnHover); }
@@ -334,6 +366,95 @@ select.input option{
 .btn.small{
   padding:9px 10px;
   border-radius:12px;
+}
+
+/* file row */
+.fileWrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap: wrap;
+}
+
+.fileBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:11px 14px;
+  border-radius:14px;
+  background: rgba(255,255,255,.26);
+  color:#0b0b0b;
+  font-weight:900;
+  cursor:pointer;
+  border: 1px solid rgba(0,0,0,.12);
+  font-family: inherit;
+}
+
+.fileName{
+  font-weight:800;
+  color:white;
+  max-width: 100%;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* categories list */
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.catRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(0,0,0,.10);
+}
+
+.catName{
+  font-weight:900;
+  color:white;
+}
+
+.catMeta{
+  font-size:12px;
+  font-weight:700;
+  color:white;
+  opacity:.95;
+}
+
+.mono{
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size:11px;
+}
+
+/* admin items table columns (icon, name, price, actions) */
+.table.mini .row{
+  grid-template-columns: var(--colIcon) 1fr var(--colPrice) 180px;
+}
+
+/* action cell */
+.actionCell{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  width:100%;
+}
+
+/* larger icons */
+.smallIcon{
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  object-fit: cover;
 }
 
 /* modal */
@@ -355,6 +476,8 @@ select.input option{
 .modalHead{
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  gap:10px;
   margin-bottom:10px;
 }
 .modalTitle{
@@ -363,27 +486,63 @@ select.input option{
   color:white;
 }
 
-.actionCell{
+/* toasts */
+.toastHost{
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 9999;
   display:flex;
-  justify-content:center;
-  gap:8px;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap: 10px;
+  max-width: min(420px, calc(100vw - 28px));
 }
+
+.toast{
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.98);
+  font-weight: 900;
+}
+
+.toast.good{ background: var(--good); }
+.toast.bad{ background: var(--bad); }
+
+.empty, .emptyTable{
+  padding: 12px;
+  text-align:center;
+  font-weight: 900;
+  color: rgba(255,255,255,.98);
+}
+
+.hidden{display:none}
 
 /* responsive */
 @media (max-width:760px){
   h1{font-size:34px}
 
   :root{
-    --colIcon:120px;
-    --colPrice:150px;
+    --colIcon: 120px;
+    --colPrice: 150px;
+    --fz-table: 18px;
   }
 
   .row > div{
-    font-size:18px;
     padding:10px 8px;
   }
 
   .adminGrid{ grid-template-columns:1fr; }
   .formGrid{ grid-template-columns:1fr; }
+
+  /* toolbar stacks nicely */
+  .toolbar{
+    grid-template-columns: 1fr;
+  }
+
+  .input{
+    min-width:0;
+    width:100%;
+  }
 }
