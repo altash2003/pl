@@ -7,6 +7,21 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
+/* ---------- Toasts ---------- */
+function toast(message, type = "good") {
+  const host = $("toastHost");
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.textContent = message;
+  host.appendChild(el);
+
+  setTimeout(() => {
+    el.style.opacity = "0.0";
+    el.style.transform = "translateY(4px)";
+    setTimeout(() => el.remove(), 220);
+  }, 2600);
+}
+
 async function isAdmin() {
   const me = await fetch("/api/admin/me").then(r => r.json());
   return me.isAdmin;
@@ -26,15 +41,18 @@ async function login() {
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
     $("loginMsg").textContent = data.error || "Login failed.";
+    toast(data.error || "Login failed.", "bad");
     return;
   }
 
+  toast("Logged in ✅", "good");
   await bootAdmin();
 }
 
 async function logout() {
   await fetch("/api/admin/logout", { method: "POST" });
-  location.reload();
+  toast("Logged out.", "good");
+  setTimeout(() => location.reload(), 300);
 }
 
 let categories = [];
@@ -43,17 +61,14 @@ let items = [];
 async function loadCategories() {
   categories = await fetch("/api/categories").then(r => r.json());
 
-  // Add item form category select
   $("catSelect").innerHTML = categories.length
     ? categories.map(c => `<option value="${c._id}">${escapeHtml(c.name)}</option>`).join("")
     : `<option value="">No categories yet</option>`;
 
-  // Items filter select
   $("filterCat").innerHTML =
     `<option value="">All Categories</option>` +
     categories.map(c => `<option value="${c._id}">${escapeHtml(c.name)}</option>`).join("");
 
-  // Category list UI
   const catList = $("catList");
   catList.innerHTML = "";
 
@@ -66,13 +81,13 @@ async function loadCategories() {
     const row = document.createElement("div");
     row.className = "catRow";
     row.innerHTML = `
-      <div class="catLeft">
+      <div>
         <div class="catName">${escapeHtml(c.name)}</div>
         <div class="catMeta">ID: <span class="mono">${escapeHtml(c._id)}</span></div>
       </div>
       <button class="btn danger small">Delete</button>
     `;
-    row.querySelector("button").addEventListener("click", () => deleteCategory(c._id));
+    row.querySelector("button").addEventListener("click", () => deleteCategory(c._id, c.name));
     catList.appendChild(row);
   }
 }
@@ -119,14 +134,17 @@ function renderItems(list) {
         <button class="btn danger small">Delete</button>
       </div>
     `;
-    row.querySelector("button").addEventListener("click", () => deleteItem(it._id));
+    row.querySelector("button").addEventListener("click", () => deleteItem(it._id, it.name));
     wrap.appendChild(row);
   }
 }
 
 async function addCategory() {
   const name = $("newCat").value.trim();
-  if (!name) return;
+  if (!name) {
+    toast("Please enter a category name.", "bad");
+    return;
+  }
 
   const res = await fetch("/api/categories", {
     method: "POST",
@@ -136,26 +154,29 @@ async function addCategory() {
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    alert(data.error || "Failed to add category.");
+    toast(data.error || "Failed to add category.", "bad");
     return;
   }
 
   $("newCat").value = "";
+  toast("Category added ✅", "good");
   await loadCategories();
   await loadItems();
 }
 
-async function deleteCategory(id) {
-  if (!confirm("Delete this category? (Must be empty)")) return;
+async function deleteCategory(id, name) {
+  const ok = confirm(`Delete category "${name}"?\n\nThis only works if the category has NO items.`);
+  if (!ok) return;
 
   const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    alert(data.error || "Failed to delete category.");
+    toast(data.error || "Failed to delete category.", "bad");
     return;
   }
 
+  toast("Category deleted ✅", "good");
   await loadCategories();
   await loadItems();
 }
@@ -169,7 +190,7 @@ async function addItem() {
   const iconFile = $("itemIcon").files[0];
 
   if (!categoryId || !name || !price || !iconFile) {
-    $("itemMsg").textContent = "Fill category, name, price, and upload an icon.";
+    toast("Fill category, item name, price, and upload an icon.", "bad");
     return;
   }
 
@@ -183,26 +204,34 @@ async function addItem() {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    $("itemMsg").textContent = data.error || "Failed to add item.";
+    toast(data.error || "Failed to add item.", "bad");
     return;
   }
 
   $("itemName").value = "";
   $("itemPrice").value = "";
   $("itemIcon").value = "";
+  $("fileName").textContent = "No file selected";
 
-  $("itemMsg").textContent = "Item added ✅";
+  toast("Item added ✅", "good");
   await loadItems();
 }
 
-async function deleteItem(id) {
-  if (!confirm("Delete this item?")) return;
-  await fetch(`/api/items/${id}`, { method: "DELETE" });
+async function deleteItem(id, name) {
+  const ok = confirm(`Delete item "${name}"?`);
+  if (!ok) return;
+
+  const res = await fetch(`/api/items/${id}`, { method: "DELETE" });
+  if (!res.ok) {
+    toast("Failed to delete item.", "bad");
+    return;
+  }
+
+  toast("Item deleted ✅", "good");
   await loadItems();
 }
 
 async function bootAdmin() {
-  // show admin panel
   $("loginCard").classList.add("hidden");
   $("adminCard").classList.remove("hidden");
   $("logoutBtn").classList.remove("hidden");
@@ -213,15 +242,18 @@ async function bootAdmin() {
   $("addCatBtn").addEventListener("click", addCategory);
   $("addItemBtn").addEventListener("click", addItem);
   $("logoutBtn").addEventListener("click", logout);
+
   $("refreshBtn").addEventListener("click", async () => {
     await loadCategories();
     await loadItems();
+    toast("Refreshed ✅", "good");
   });
 
   $("filterCat").addEventListener("change", loadItems);
-  $("searchItems").addEventListener("input", debounce(loadItems, 200));
+  $("searchItems").addEventListener("input", debounce(loadItems, 220));
 }
 
+/* Debounce */
 function debounce(fn, ms) {
   let t;
   return (...args) => {
@@ -233,10 +265,19 @@ function debounce(fn, ms) {
 window.addEventListener("DOMContentLoaded", async () => {
   $("loginBtn").addEventListener("click", login);
 
-  // Enter key support on login
   $("pass").addEventListener("keydown", (e) => {
     if (e.key === "Enter") login();
   });
+
+  // File label update
+  const file = $("itemIcon");
+  const fileName = $("fileName");
+  if (file && fileName) {
+    file.addEventListener("change", () => {
+      fileName.textContent = file.files?.[0]?.name || "No file selected";
+      if (file.files?.[0]) toast("Icon selected ✅", "good");
+    });
+  }
 
   if (await isAdmin()) {
     await bootAdmin();
