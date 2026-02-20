@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="top">
+    <h1>Admin Panel</h1>
+    <p class="sub">Only you can login + edit</p>
+    <a class="pill" href="/">← Back to Pricelist</a>
+  </header>
+
+  <main class="wrap">
+    <section class="card" id="loginCard">
+      <h2>Login</h2>
+      <div class="grid2">
+        <input id="user" class="input" placeholder="Username" />
+        <input id="pass" class="input" placeholder="Password" type="password" />
+      </div>
+      <button id="loginBtn" class="btn">Login</button>
+      <div class="msg" id="loginMsg"></div>
+    </section>
+
+    <section class="card hidden" id="adminCard">
+      <div class="rowFlex">
+        <h2>Manage</h2>
+        <button id="logoutBtn" class="btn ghost">Logout</button>
+      </div>
+
+      <hr class="sep"/>
+
+      <h3>Categories</h3>
+      <div class="rowFlex">
+        <input id="newCat" class="input" placeholder="New category name..." />
+        <button id="addCatBtn" class="btn">Add Category</button>
+      </div>
+      <div id="catList" class="list"></div>
+
+      <hr class="sep"/>
+
+      <h3>Add Item</h3>
+      <div class="grid2">
+        <select id="catSelect" class="input"></select>
+        <input id="itemName" class="input" placeholder="Item name" />
+        <input id="itemPrice" class="input" placeholder="Price (TC) e.g. 60,000-100,000" />
+        <input id="itemIcon" class="input" type="file" accept="image/*" />
+      </div>
+      <button id="addItemBtn" class="btn">Add Item</button>
+      <div class="msg" id="itemMsg"></div>
+
+      <hr class="sep"/>
+
+      <h3>Items</h3>
+      <div class="rowFlex">
+        <select id="filterCat" class="input"></select>
+        <input id="searchItems" class="input" placeholder="Search..." />
+      </div>
+      <div id="itemsTable" class="table mini"></div>
+    </section>
+  </main>
+
+  <script src="./admin.js"></script>
+</body>
+</html>
