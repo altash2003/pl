@@ -7,7 +7,7 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-/* ---------- Toasts ---------- */
+/* Toasts */
 function toast(message, type = "good") {
   const host = $("toastHost");
   const el = document.createElement("div");
@@ -19,7 +19,7 @@ function toast(message, type = "good") {
     el.style.opacity = "0.0";
     el.style.transform = "translateY(4px)";
     setTimeout(() => el.remove(), 220);
-  }, 2600);
+  }, 2200);
 }
 
 async function isAdmin() {
@@ -52,7 +52,7 @@ async function login() {
 async function logout() {
   await fetch("/api/admin/logout", { method: "POST" });
   toast("Logged out.", "good");
-  setTimeout(() => location.reload(), 300);
+  setTimeout(() => location.reload(), 250);
 }
 
 let categories = [];
@@ -63,7 +63,7 @@ async function loadCategories() {
 
   $("catSelect").innerHTML = categories.length
     ? categories.map(c => `<option value="${c._id}">${escapeHtml(c.name)}</option>`).join("")
-    : `<option value="">No categories yet</option>`;
+    : `<option value="">No categories</option>`;
 
   $("filterCat").innerHTML =
     `<option value="">All Categories</option>` +
@@ -73,7 +73,7 @@ async function loadCategories() {
   catList.innerHTML = "";
 
   if (!categories.length) {
-    catList.innerHTML = `<div class="empty">No categories yet. Add one above.</div>`;
+    catList.innerHTML = `<div class="empty">No categories.</div>`;
     return;
   }
 
@@ -111,13 +111,13 @@ function renderItems(list) {
     <div class="row head">
       <div>Icon</div>
       <div>Item Name</div>
-      <div>Price (TC)</div>
+      <div>Price</div>
       <div>Action</div>
     </div>
   `;
 
   if (!list.length) {
-    wrap.innerHTML += `<div class="emptyTable">No items found.</div>`;
+    wrap.innerHTML += `<div class="emptyTable">No items.</div>`;
     return;
   }
 
@@ -128,8 +128,8 @@ function renderItems(list) {
       <div class="iconCell">
         <img class="icon smallIcon" src="${it.iconDataUrl}" alt="">
       </div>
-      <div>${escapeHtml(it.name)}</div>
-      <div>${escapeHtml(it.price)} TC</div>
+      <div class="cellName">${escapeHtml(it.name)}</div>
+      <div class="cellPrice">${escapeHtml(it.price)}</div>
       <div>
         <button class="btn danger small">Delete</button>
       </div>
@@ -141,10 +141,7 @@ function renderItems(list) {
 
 async function addCategory() {
   const name = $("newCat").value.trim();
-  if (!name) {
-    toast("Please enter a category name.", "bad");
-    return;
-  }
+  if (!name) return toast("Enter category name.", "bad");
 
   const res = await fetch("/api/categories", {
     method: "POST",
@@ -154,8 +151,7 @@ async function addCategory() {
 
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
-    toast(data.error || "Failed to add category.", "bad");
-    return;
+    return toast(data.error || "Failed.", "bad");
   }
 
   $("newCat").value = "";
@@ -165,16 +161,13 @@ async function addCategory() {
 }
 
 async function deleteCategory(id, name) {
-  const ok = confirm(`Delete category "${name}"?\n\nThis only works if the category has NO items.`);
+  const ok = confirm(`Delete category "${name}"?`);
   if (!ok) return;
 
   const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
   const data = await res.json().catch(() => ({}));
 
-  if (!res.ok) {
-    toast(data.error || "Failed to delete category.", "bad");
-    return;
-  }
+  if (!res.ok) return toast(data.error || "Failed.", "bad");
 
   toast("Category deleted ✅", "good");
   await loadCategories();
@@ -190,8 +183,7 @@ async function addItem() {
   const iconFile = $("itemIcon").files[0];
 
   if (!categoryId || !name || !price || !iconFile) {
-    toast("Fill category, item name, price, and upload an icon.", "bad");
-    return;
+    return toast("Fill name, price, icon.", "bad");
   }
 
   const fd = new FormData();
@@ -202,30 +194,23 @@ async function addItem() {
 
   const res = await fetch("/api/items", { method: "POST", body: fd });
   const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    toast(data.error || "Failed to add item.", "bad");
-    return;
-  }
+  if (!res.ok) return toast(data.error || "Failed.", "bad");
 
   $("itemName").value = "";
   $("itemPrice").value = "";
   $("itemIcon").value = "";
-  $("fileName").textContent = "No file selected";
+  $("fileName").textContent = "No file";
 
   toast("Item added ✅", "good");
   await loadItems();
 }
 
 async function deleteItem(id, name) {
-  const ok = confirm(`Delete item "${name}"?`);
+  const ok = confirm(`Delete "${name}"?`);
   if (!ok) return;
 
   const res = await fetch(`/api/items/${id}`, { method: "DELETE" });
-  if (!res.ok) {
-    toast("Failed to delete item.", "bad");
-    return;
-  }
+  if (!res.ok) return toast("Failed.", "bad");
 
   toast("Item deleted ✅", "good");
   await loadItems();
@@ -250,10 +235,9 @@ async function bootAdmin() {
   });
 
   $("filterCat").addEventListener("change", loadItems);
-  $("searchItems").addEventListener("input", debounce(loadItems, 220));
+  $("searchItems").addEventListener("input", debounce(loadItems, 200));
 }
 
-/* Debounce */
 function debounce(fn, ms) {
   let t;
   return (...args) => {
@@ -269,13 +253,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (e.key === "Enter") login();
   });
 
-  // File label update
   const file = $("itemIcon");
   const fileName = $("fileName");
   if (file && fileName) {
     file.addEventListener("change", () => {
-      fileName.textContent = file.files?.[0]?.name || "No file selected";
-      if (file.files?.[0]) toast("Icon selected ✅", "good");
+      fileName.textContent = file.files?.[0]?.name || "No file";
     });
   }
 
