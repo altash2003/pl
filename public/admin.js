@@ -58,6 +58,34 @@ async function logout() {
 let categories = [];
 let items = [];
 
+/* ---------- EDIT MODAL STATE ---------- */
+let editingItemId = null;
+
+function openEditModal(item) {
+  editingItemId = item._id;
+
+  // fill category options
+  $("editCategory").innerHTML = categories.map(c =>
+    `<option value="${c._id}">${escapeHtml(c.name)}</option>`
+  ).join("");
+
+  $("editCategory").value = item.categoryId;
+  $("editName").value = item.name || "";
+  $("editPrice").value = item.price || "";
+  $("editIcon").value = "";
+  $("editFileName").textContent = "No file";
+  $("editMsg").textContent = "";
+
+  $("editModal").classList.remove("hidden");
+  $("editModal").setAttribute("aria-hidden", "false");
+}
+
+function closeEditModal() {
+  $("editModal").classList.add("hidden");
+  $("editModal").setAttribute("aria-hidden", "true");
+  editingItemId = null;
+}
+
 async function loadCategories() {
   categories = await fetch("/api/categories").then(r => r.json());
 
@@ -112,7 +140,7 @@ function renderItems(list) {
       <div>Icon</div>
       <div>Item Name</div>
       <div>Price</div>
-      <div>Action</div>
+      <div>Actions</div>
     </div>
   `;
 
@@ -130,11 +158,15 @@ function renderItems(list) {
       </div>
       <div class="cellName">${escapeHtml(it.name)}</div>
       <div class="cellPrice">${escapeHtml(it.price)}</div>
-      <div>
-        <button class="btn danger small">Delete</button>
+      <div class="actionCell">
+        <button class="btn ghost small editBtn">Edit</button>
+        <button class="btn danger small delBtn">Delete</button>
       </div>
     `;
-    row.querySelector("button").addEventListener("click", () => deleteItem(it._id, it.name));
+
+    row.querySelector(".editBtn").addEventListener("click", () => openEditModal(it));
+    row.querySelector(".delBtn").addEventListener("click", () => deleteItem(it._id, it.name));
+
     wrap.appendChild(row);
   }
 }
@@ -175,8 +207,6 @@ async function deleteCategory(id, name) {
 }
 
 async function addItem() {
-  $("itemMsg").textContent = "";
-
   const categoryId = $("catSelect").value;
   const name = $("itemName").value.trim();
   const price = $("itemPrice").value.trim();
@@ -202,6 +232,42 @@ async function addItem() {
   $("fileName").textContent = "No file";
 
   toast("Item added ✅", "good");
+  await loadItems();
+}
+
+async function saveEdit() {
+  $("editMsg").textContent = "";
+  if (!editingItemId) return;
+
+  const categoryId = $("editCategory").value;
+  const name = $("editName").value.trim();
+  const price = $("editPrice").value.trim();
+  const iconFile = $("editIcon").files[0];
+
+  if (!categoryId || !name || !price) {
+    toast("Fill name and price.", "bad");
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append("categoryId", categoryId);
+  fd.append("name", name);
+  fd.append("price", price);
+  if (iconFile) fd.append("icon", iconFile);
+
+  const res = await fetch(`/api/items/${editingItemId}`, {
+    method: "PUT",
+    body: fd
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    toast(data.error || "Update failed.", "bad");
+    return;
+  }
+
+  toast("Item updated ✅", "good");
+  closeEditModal();
   await loadItems();
 }
 
@@ -238,6 +304,7 @@ async function bootAdmin() {
   $("searchItems").addEventListener("input", debounce(loadItems, 200));
 }
 
+/* Debounce */
 function debounce(fn, ms) {
   let t;
   return (...args) => {
@@ -248,11 +315,9 @@ function debounce(fn, ms) {
 
 window.addEventListener("DOMContentLoaded", async () => {
   $("loginBtn").addEventListener("click", login);
+  $("pass").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
 
-  $("pass").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") login();
-  });
-
+  // File label update (add item)
   const file = $("itemIcon");
   const fileName = $("fileName");
   if (file && fileName) {
@@ -261,7 +326,20 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  if (await isAdmin()) {
-    await bootAdmin();
-  }
+  // Edit modal file label update
+  $("editIcon").addEventListener("change", () => {
+    $("editFileName").textContent = $("editIcon").files?.[0]?.name || "No file";
+  });
+
+  // Modal controls
+  $("editCloseBtn").addEventListener("click", closeEditModal);
+  $("editBackdrop").addEventListener("click", closeEditModal);
+  $("saveEditBtn").addEventListener("click", saveEdit);
+
+  // Esc to close
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !$("editModal").classList.contains("hidden")) closeEditModal();
+  });
+
+  if (await isAdmin()) await bootAdmin();
 });
