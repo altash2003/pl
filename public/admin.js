@@ -7,6 +7,96 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
+/* ================= CUSTOM SELECT (perfect centered dropdown) ================= */
+const CustomSelect = (() => {
+  const map = new WeakMap();
+
+  function closeAll(exceptEl) {
+    document.querySelectorAll(".cselect.open").forEach(el => {
+      if (el !== exceptEl) el.classList.remove("open");
+    });
+  }
+
+  function build(select) {
+    if (!select) return;
+    select.setAttribute("data-custom-select", "1");
+
+    const existing = map.get(select);
+    if (existing) {
+      refresh(select);
+      return;
+    }
+
+    const wrap = document.createElement("div");
+    wrap.className = "cselect";
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "cselectButton";
+    btn.innerHTML = `<span class="cselectLabel"></span><span class="cselectArrow"></span>`;
+
+    const menu = document.createElement("div");
+    menu.className = "cselectMenu";
+
+    wrap.appendChild(btn);
+    wrap.appendChild(menu);
+
+    select.parentNode.insertBefore(wrap, select.nextSibling);
+
+    function setLabelFromValue() {
+      const opt = select.options[select.selectedIndex];
+      btn.querySelector(".cselectLabel").textContent = opt ? opt.textContent : "";
+    }
+
+    function renderOptions() {
+      menu.innerHTML = "";
+      Array.from(select.options).forEach((opt) => {
+        const div = document.createElement("div");
+        div.className = "cselectOption";
+        div.textContent = opt.textContent;
+        if (opt.value === select.value) div.classList.add("active");
+
+        div.addEventListener("click", () => {
+          select.value = opt.value;
+          select.dispatchEvent(new Event("change", { bubbles: true }));
+          setLabelFromValue();
+          renderOptions();
+          wrap.classList.remove("open");
+        });
+
+        menu.appendChild(div);
+      });
+    }
+
+    btn.addEventListener("click", () => {
+      const willOpen = !wrap.classList.contains("open");
+      closeAll(wrap);
+      wrap.classList.toggle("open", willOpen);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!wrap.contains(e.target)) wrap.classList.remove("open");
+    });
+
+    setLabelFromValue();
+    renderOptions();
+
+    map.set(select, { wrap, setLabelFromValue, renderOptions });
+  }
+
+  function refresh(select) {
+    const obj = map.get(select);
+    if (!obj) {
+      build(select);
+      return;
+    }
+    obj.setLabelFromValue();
+    obj.renderOptions();
+  }
+
+  return { build, refresh };
+})();
+
 /* Toasts */
 function toast(message, type = "good") {
   const host = $("toastHost");
@@ -64,7 +154,6 @@ let editingItemId = null;
 function openEditModal(item) {
   editingItemId = item._id;
 
-  // fill category options
   $("editCategory").innerHTML = categories.map(c =>
     `<option value="${c._id}">${escapeHtml(c.name)}</option>`
   ).join("");
@@ -75,6 +164,10 @@ function openEditModal(item) {
   $("editIcon").value = "";
   $("editFileName").textContent = "No file";
   $("editMsg").textContent = "";
+
+  // ✅ custom dropdown refresh
+  CustomSelect.build($("editCategory"));
+  CustomSelect.refresh($("editCategory"));
 
   $("editModal").classList.remove("hidden");
   $("editModal").setAttribute("aria-hidden", "false");
@@ -96,6 +189,13 @@ async function loadCategories() {
   $("filterCat").innerHTML =
     `<option value="">All Categories</option>` +
     categories.map(c => `<option value="${c._id}">${escapeHtml(c.name)}</option>`).join("");
+
+  // ✅ build/refresh custom dropdowns
+  ["catSelect","filterCat"].forEach(id => {
+    const sel = $(id);
+    CustomSelect.build(sel);
+    CustomSelect.refresh(sel);
+  });
 
   const catList = $("catList");
   catList.innerHTML = "";
@@ -163,10 +263,8 @@ function renderItems(list) {
         <button class="btn danger small delBtn">Delete</button>
       </div>
     `;
-
     row.querySelector(".editBtn").addEventListener("click", () => openEditModal(it));
     row.querySelector(".delBtn").addEventListener("click", () => deleteItem(it._id, it.name));
-
     wrap.appendChild(row);
   }
 }
@@ -304,7 +402,6 @@ async function bootAdmin() {
   $("searchItems").addEventListener("input", debounce(loadItems, 200));
 }
 
-/* Debounce */
 function debounce(fn, ms) {
   let t;
   return (...args) => {
@@ -318,25 +415,20 @@ window.addEventListener("DOMContentLoaded", async () => {
   $("pass").addEventListener("keydown", (e) => { if (e.key === "Enter") login(); });
 
   // File label update (add item)
-  const file = $("itemIcon");
-  const fileName = $("fileName");
-  if (file && fileName) {
-    file.addEventListener("change", () => {
-      fileName.textContent = file.files?.[0]?.name || "No file";
-    });
-  }
+  $("itemIcon")?.addEventListener("change", () => {
+    $("fileName").textContent = $("itemIcon").files?.[0]?.name || "No file";
+  });
 
   // Edit modal file label update
-  $("editIcon").addEventListener("change", () => {
+  $("editIcon")?.addEventListener("change", () => {
     $("editFileName").textContent = $("editIcon").files?.[0]?.name || "No file";
   });
 
   // Modal controls
-  $("editCloseBtn").addEventListener("click", closeEditModal);
-  $("editBackdrop").addEventListener("click", closeEditModal);
-  $("saveEditBtn").addEventListener("click", saveEdit);
+  $("editCloseBtn")?.addEventListener("click", closeEditModal);
+  $("editBackdrop")?.addEventListener("click", closeEditModal);
+  $("saveEditBtn")?.addEventListener("click", saveEdit);
 
-  // Esc to close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !$("editModal").classList.contains("hidden")) closeEditModal();
   });
