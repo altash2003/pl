@@ -7,7 +7,8 @@ async function loadCategories() {
   categories = await fetch("/api/categories").then(r => r.json());
 
   const sel = $("category");
-  sel.innerHTML = `<option value="">All Categories</option>` +
+  sel.innerHTML =
+    `<option value="">All Categories</option>` +
     categories.map(c => `<option value="${c._id}">${escapeHtml(c.name)}</option>`).join("");
 }
 
@@ -35,8 +36,8 @@ function render(list) {
       <div class="iconCell">
         <img class="icon" src="${it.iconDataUrl}" alt="">
       </div>
-      <div>${escapeHtml(it.name)}</div>
-      <div>${escapeHtml(it.price)} TC</div>
+      <div class="cellName">${escapeHtml(it.name)}</div>
+      <div class="cellPrice">${escapeHtml(it.price)}</div>
     `;
 
     wrap.appendChild(row);
