@@ -16,14 +16,10 @@
   --good: rgba(0, 180, 120, .45);
   --bad: rgba(255, 60, 60, .45);
 
-  /* viewer table columns */
   --colIcon: 150px;
   --colPrice: 220px;
-
-  /* admin table extra column */
   --colAction: 180px;
 
-  /* typography */
   --fz-title: 22px;
   --fz-section: 20px;
   --fz-label: 15px;
@@ -37,26 +33,13 @@
 
 body{
   margin:0;
-  font-family: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  font-family: "Montserrat", Arial, sans-serif;
   background: linear-gradient(180deg,var(--bg1),var(--bg2));
   min-height:100vh;
-  line-height: 1.25;
+  line-height:1.25;
 }
 
-/* ================= VIEWER ================= */
-
-.top{
-  padding:18px 16px 10px;
-  text-align:center;
-}
-
-h1{
-  margin:0;
-  font-size:42px;
-  font-weight:900;
-  color:#fff;
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
+/* ================= GENERAL ================= */
 
 .wrap{
   max-width:980px;
@@ -64,28 +47,17 @@ h1{
   padding:12px 16px 26px;
 }
 
-/* ---------- INPUTS ---------- */
-
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-  align-items:center;
-  margin:10px 0 12px;
-}
-
 .input{
-  padding:10px 12px;
+  padding:10px 14px;
   border-radius:14px;
   border:1px solid rgba(0,0,0,.15);
   background: rgba(255,255,255,.94);
-  min-width:220px;
   font-size:var(--fz-input);
   font-weight:700;
   text-align:center;
   outline:none;
   font-family: inherit;
+  min-width:220px;
 }
 
 .input:focus{
@@ -93,16 +65,19 @@ h1{
   box-shadow: 0 0 0 4px rgba(255,255,255,.18);
 }
 
+/* ================= DROPDOWN FIX ================= */
+
+/* PERFECT CENTERED DROPDOWN */
 select.input{
   text-align:center;
   text-align-last:center;
   -moz-text-align-last:center;
+
   appearance:none;
   -webkit-appearance:none;
   -moz-appearance:none;
 
-  padding-left:42px;
-  padding-right:42px;
+  padding:10px 38px; /* symmetrical */
 
   background-image:
     linear-gradient(45deg, transparent 50%, rgba(0,0,0,.55) 50%),
@@ -114,9 +89,11 @@ select.input{
   background-repeat:no-repeat;
 }
 
-select.input option{ text-align:center; }
+select.input option{
+  text-align:center;
+}
 
-/* ---------- TABLE (base) ---------- */
+/* ================= TABLE ================= */
 
 .table{
   border-radius:var(--radius);
@@ -134,12 +111,11 @@ select.input option{ text-align:center; }
   display:grid;
   grid-template-columns: var(--colIcon) 1fr var(--colPrice);
   align-items:center;
-  justify-items:center;  /* ✅ center everything in cells */
+  justify-items:center;
   text-align:center;
   border-top:1px solid var(--strokeSoft);
 }
 
-/* ✅ continuous vertical lines for 3-col tables (viewer) */
 .row::after{
   content:"";
   position:absolute;
@@ -172,316 +148,24 @@ select.input option{ text-align:center; }
   font-size:var(--fz-table);
   font-weight:900;
   color:#fff;
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
 }
 
-/* header text bold black */
 .row.head > div{
   color:#000;
   font-weight:950;
-  text-shadow:none;
 }
 
-/* icon */
-.iconCell{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+/* ================= ADMIN TABLE (4 columns) ================= */
 
-.icon{
-  width:66px;
-  height:66px;
-  border-radius:16px;
-  object-fit:cover;
-  border:2px solid rgba(255,255,255,.75);
-  box-shadow:0 8px 18px rgba(0,0,0,.22);
-  background: rgba(255,255,255,.18);
-  transition: transform .12s ease, filter .12s ease;
-}
-
-.icon:hover{
-  transform: scale(1.04);
-  filter: brightness(1.03);
-}
-
-.cellName{ color:#fff; }
-.cellPrice{ color:#fff; }
-
-.foot{
-  margin-top:10px;
-  color:#fff;
-  font-weight:900;
-  text-align:center;
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
-
-/* ================= ADMIN ================= */
-
-.adminTop{
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  backdrop-filter: blur(12px);
-  background: rgba(0,0,0,.22);
-  border-bottom: 1px solid rgba(255,255,255,.18);
-}
-
-.adminTopInner{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 10px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-}
-
-.adminBrand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#fff;
-}
-
-.dot{
-  width:14px;
-  height:14px;
-  border-radius:999px;
-  background:#fff;
-  box-shadow: 0 0 0 5px rgba(255,255,255,.14);
-}
-
-.adminTitle{
-  font-weight:950;
-  font-size:var(--fz-title);
-  letter-spacing:.3px;
-}
-
-.adminSub{
-  font-size:13px;
-  font-weight:700;
-  opacity:.95;
-}
-
-.adminActions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.adminWrap{ max-width:1100px; }
-
-/* cards */
-.card{
-  background: var(--panel);
-  border: 1px solid rgba(0,0,0,.10);
-  border-radius:var(--radius);
-  padding:14px;
-  margin-bottom:14px;
-  backdrop-filter: blur(10px);
-}
-
-/* headings */
-.sectionTitle{
-  margin:0 0 10px;
-  font-size:var(--fz-section);
-  font-weight:950;
-  color:#fff;
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
-
-.sectionBlock{
-  background: var(--panel2);
-  border: 1px solid rgba(0,0,0,.08);
-  border-radius:14px;
-  padding:12px;
-}
-
-/* layout */
-.adminGrid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:14px;
-}
-
-.adminWide{ grid-column: 1 / -1; }
-
-.formGrid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:12px; /* ✅ consistent spacing */
-}
-
-.field span{
-  display:block;
-  font-size:var(--fz-label);
-  font-weight:800;
-  color:#fff;
-  margin-bottom:6px;
-}
-
-.inlineForm{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  margin-bottom:10px;
-}
-
-.rowButtons{
-  display:flex;
-  gap:10px;
-  margin-top:12px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-
-/* ✅ Center-align Save button in modal */
-.modalActions{
-  justify-content:center;
-}
-
-/* ✅ Toolbar alignment: clean and balanced */
-.toolbar{
-  display:grid;
-  grid-template-columns: 260px 1fr 140px;
-  gap:10px;
-  align-items:center;
-  margin:10px 0 12px;
-}
-
-.toolbar .input{
-  min-width:0;
-  width:100%;
-}
-
-/* buttons */
-.btn{
-  padding:11px 14px;
-  border-radius:14px;
-  border:none;
-  background: var(--btn);
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-  font-family: inherit;
-  transition: transform .08s ease, background .12s ease, opacity .12s ease;
-}
-
-.btn:hover{ background: var(--btnHover); }
-.btn:active{ transform: translateY(1px); }
-
-.btn.ghost{
-  background: rgba(255,255,255,.26);
-  color:#0b0b0b;
-}
-
-.btn.danger{
-  background: rgba(255,0,0,.35);
-}
-
-.btn.small{
-  padding:9px 10px;
-  border-radius:12px;
-}
-
-/* inactive/disabled cues */
-.btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-  transform:none;
-}
-
-/* file upload */
-.fileWrap{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap: wrap;
-}
-
-.fileBtn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:11px 14px;
-  border-radius:14px;
-  background: rgba(255,255,255,.30);
-  color:#0b0b0b;
-  font-weight:900;
-  cursor:pointer;
-  border: 1px solid rgba(0,0,0,.12);
-  transition: transform .08s ease, background .12s ease;
-  user-select:none;
-}
-
-.fileBtn:hover{ background: rgba(255,255,255,.40); }
-.fileBtn:active{ transform: translateY(1px); }
-
-.fileName{
-  font-weight:800;
-  color:#fff;
-  max-width: 100%;
-  overflow:hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* categories list */
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.catRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:10px 12px;
-  border-radius:14px;
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(0,0,0,.10);
-}
-
-.catName{
-  font-weight:900;
-  color:#fff;
-}
-
-.catMeta{
-  font-size:12px;
-  font-weight:700;
-  color:#fff;
-  opacity:.95;
-}
-
-.mono{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size:11px;
-}
-
-/* ================= ADMIN ITEMS TABLE (4 columns) ================= */
-
-/* icon | name | price | actions */
 .table.mini .row{
   grid-template-columns: var(--colIcon) 1fr var(--colPrice) var(--colAction);
 }
 
-/* ✅ override vertical lines for 4-col table so NAME/PRICE divider is strong + continuous */
 .table.mini .row::after{
   content:"";
   position:absolute;
   inset:0;
   pointer-events:none;
-
-  /* vertical lines at:
-     1) after icon: var(--colIcon)
-     2) between name and price: calc(100% - (var(--colPrice) + var(--colAction)))
-     3) between price and actions: calc(100% - var(--colAction))
-  */
   background:
     linear-gradient(to right,
       transparent 0,
@@ -503,127 +187,73 @@ select.input option{ text-align:center; }
     );
 }
 
-/* centered action buttons */
-.actionCell{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
+/* ================= BUTTONS ================= */
+
+.btn{
+  padding:11px 14px;
+  border-radius:14px;
+  border:none;
+  background: var(--btn);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition: transform .08s ease, background .12s ease;
 }
 
-/* larger icons */
-.smallIcon{
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-  object-fit: cover;
+.btn:hover{ background: var(--btnHover); }
+.btn:active{ transform: translateY(1px); }
+
+.btn.ghost{
+  background: rgba(255,255,255,.26);
+  color:#000;
+}
+
+.btn.danger{
+  background: rgba(255,0,0,.35);
+}
+
+.btn.small{
+  padding:9px 10px;
+  border-radius:12px;
 }
 
 /* ================= MODAL ================= */
 
 .modal{ position: fixed; inset:0; z-index:9998; }
+
 .modalBackdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.38);
   backdrop-filter: blur(7px);
 }
 
-/* ✅ responsive modal sizing + not too big */
 .modalCard{
   position: relative;
   width: min(820px, 92vw);
   margin: 8vh auto 0;
   background: rgba(255,255,255,.18);
-  border: 1px solid rgba(0,0,0,.12);
   border-radius: var(--radius);
   padding: 14px;
   backdrop-filter: blur(10px);
-
-  max-height: 84vh;
+  max-height:84vh;
   overflow:auto;
 }
-
-.modalHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-
-.modalTitle{
-  font-weight:950;
-  font-size:20px;
-  color:#fff;
-  text-shadow: 0 2px 0 rgba(0,0,0,.18);
-}
-
-/* ================= TOASTS ================= */
-
-.toastHost{
-  position: fixed;
-  right: 14px;
-  bottom: 14px;
-  z-index: 9999;
-  display:flex;
-  flex-direction:column;
-  gap: 10px;
-  max-width: min(420px, calc(100vw - 28px));
-}
-
-.toast{
-  padding: 12px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(0,0,0,.22);
-  color: rgba(255,255,255,.98);
-  font-weight: 900;
-  box-shadow: 0 10px 22px rgba(0,0,0,.20);
-}
-
-.toast.good{ background: var(--good); }
-.toast.bad{ background: var(--bad); }
-
-.empty, .emptyTable{
-  padding: 12px;
-  text-align:center;
-  font-weight: 900;
-  color: rgba(255,255,255,.98);
-}
-
-.hidden{ display:none; }
 
 /* ================= RESPONSIVE ================= */
 
 @media (max-width:760px){
-  h1{ font-size:34px; }
-
   :root{
-    --colIcon: 120px;
-    --colPrice: 150px;
-    --colAction: 150px;
-    --fz-table: 18px;
+    --colIcon:120px;
+    --colPrice:150px;
+    --colAction:150px;
+    --fz-table:18px;
   }
 
   .row > div{
     padding:10px 8px;
   }
 
-  .adminGrid{ grid-template-columns:1fr; }
-  .formGrid{ grid-template-columns:1fr; }
-
-  .toolbar{
-    grid-template-columns: 1fr;
-  }
-
-  .input{
-    min-width:0;
-    width:100%;
-  }
-
   .modalCard{
-    margin: 6vh auto 0;
+    margin:6vh auto 0;
   }
 }
