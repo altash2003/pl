@@ -1,24 +1,39 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Primordial Unique Items</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Item Pricelist</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <header class="top">
+    <h1>Item Pricelist</h1>
+    <p class="sub">Read-only mode (search + view)</p>
+  </header>
 
-<h1>Primordial Unique Items</h1>
+  <main class="wrap">
+    <div class="controls">
+      <select id="category" class="input"></select>
+      <input id="search" class="input" placeholder="Search item name..." />
+    </div>
 
-<input id="search" placeholder="Search item name...">
-<select id="sort">
-  <option value="name-asc">Name (A→Z)</option>
-  <option value="name-desc">Name (Z→A)</option>
-  <option value="price-asc">Price (Low→High)</option>
-  <option value="price-desc">Price (High→Low)</option>
-</select>
+    <div class="table">
+      <div class="row head">
+        <div>Item Icon</div>
+        <div>Item Name</div>
+        <div class="right">Price (TC)</div>
+      </div>
+      <div id="list"></div>
+    </div>
 
-<div id="items"></div>
+    <div class="foot" id="count"></div>
 
-<script src="script.js"></script>
+    <div class="adminLink">
+      <a href="/admin.html">Admin</a>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
 </body>
 </html>
